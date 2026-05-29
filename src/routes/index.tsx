@@ -81,8 +81,9 @@ function Hero() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-36 md:pt-44 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pb-32">
         <div className="text-white">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider ring-1 ring-white/20 backdrop-blur-md">
-            <Droplets className="h-3.5 w-3.5" /> Trusted by 2,000+ homes & offices
+            <BadgeCheck className="h-3.5 w-3.5" /> Licensed & Insured · Trusted by 2,000+ homes
           </span>
+
           <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
             Windows so clean,<br />
             <span className="bg-gradient-to-r from-[oklch(0.92_0.16_90)] to-[oklch(0.85_0.18_60)] bg-clip-text text-transparent">
@@ -167,11 +168,12 @@ function ContactForm() {
 }
 
 const services = [
-  { icon: Home, title: "Residential Windows", desc: "Houses, apartments, villas — inside and out, every pane spotless." },
-  { icon: Building2, title: "Commercial & Office", desc: "Storefronts, offices, and high-rises. Scheduled or one-off." },
+  { icon: Sparkles, title: "Exterior Glass", desc: "Streak-free, crystal clear glass on every window of your home." },
+  { icon: Home, title: "Interior Glass", desc: "Inside windows wiped to a perfect, fingerprint-free shine." },
   { icon: Frame, title: "Frames & Sills", desc: "We don't just do glass. Frames, sills, tracks, and screens — fully detailed." },
-  { icon: Droplets, title: "Post-Construction", desc: "Paint splatter, dust, stickers, mineral deposits — all gone." },
+  { icon: Droplets, title: "Screens & Tracks", desc: "Dust, debris, cobwebs and grime cleared from every corner." },
 ];
+
 
 function Services() {
   return (
@@ -200,11 +202,12 @@ function Services() {
 }
 
 const whyUs = [
-  { icon: Shield, title: "Fully insured", desc: "Total peace of mind. We're insured for every job, every time." },
+  { icon: BadgeCheck, title: "Licensed & Insured", desc: "Fully licensed and insured — your home and our team are protected on every job." },
   { icon: Sparkles, title: "Streak-free guarantee", desc: "If you see a streak, we come back. Period." },
   { icon: Clock, title: "On time, every time", desc: "We respect your schedule. 15-min arrival window confirmation." },
-  { icon: Award, title: "5-star rated team", desc: "Trained professionals. 480+ five-star reviews and counting." },
+  { icon: Award, title: "5-star rated team", desc: "Trained residential specialists. 480+ five-star reviews and counting." },
 ];
+
 
 function WhyUs() {
   return (
@@ -230,39 +233,35 @@ function WhyUs() {
   );
 }
 
-const galleryItems = [
-  { title: "Crystal Glass", desc: "Streak-free, edge to edge.", icon: Sparkles, className: "md:col-span-2 md:row-span-2 text-3xl" },
-  { title: "Spotless Frames", desc: "Wiped, detailed, restored.", icon: Frame },
-  { title: "Clean Sills", desc: "Every corner, dust-free.", icon: Home },
-  { title: "Tracks & Screens", desc: "The bits everyone forgets.", icon: Droplets, className: "md:col-span-2" },
+const beforeAfter = [
+  { before: before1, after: after1, label: "Front bay window — Maple Street home" },
+  { before: before2, after: after2, label: "Side sliding window — suburban residence" },
 ];
 
 function Gallery() {
   return (
     <section id="gallery" className="mx-auto max-w-7xl px-6 py-24 md:py-32">
       <div className="mx-auto max-w-2xl text-center">
-        <span className="text-sm font-semibold uppercase tracking-wider text-primary">What you get</span>
-        <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">A full window detail.</h2>
-        <p className="mt-4 text-lg text-muted-foreground">Not just the glass — everything that makes a window a window.</p>
+        <span className="text-sm font-semibold uppercase tracking-wider text-primary">Before & After</span>
+        <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">The proof is in the glass.</h2>
+        <p className="mt-4 text-lg text-muted-foreground">Real homes. Real results. Slide your eyes from grimy to gleaming.</p>
       </div>
-      <div className="mt-12 grid auto-rows-[180px] grid-cols-1 gap-4 md:grid-cols-4">
-        {galleryItems.map((it) => {
-          const Icon = it.icon;
-          return (
-            <div
-              key={it.title}
-              className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl p-6 text-white shadow-[var(--shadow-card)] transition hover:-translate-y-1 ${it.className ?? ""}`}
-              style={{ background: "var(--gradient-hero)" }}
-            >
-              <div className="absolute inset-0 opacity-40 transition group-hover:opacity-60" style={{ backgroundImage: "radial-gradient(circle at 80% 20%, oklch(0.85 0.16 90 / 0.55), transparent 55%)" }} />
-              <Icon className="relative h-8 w-8 text-[oklch(0.92_0.16_90)]" />
-              <div className="relative">
-                <div className="text-xl font-semibold tracking-tight md:text-2xl">{it.title}</div>
-                <div className="mt-1 text-sm text-white/80">{it.desc}</div>
-              </div>
+      <div className="mt-14 grid gap-10 lg:grid-cols-2">
+        {beforeAfter.map((item, idx) => (
+          <div key={idx} className="overflow-hidden rounded-3xl border border-border bg-card p-4 shadow-[var(--shadow-card)]">
+            <div className="grid grid-cols-2 gap-3">
+              <figure className="relative overflow-hidden rounded-2xl">
+                <img src={item.before} alt={`Before cleaning — ${item.label}`} loading="lazy" width={800} height={800} className="aspect-square w-full object-cover" />
+                <figcaption className="absolute left-3 top-3 rounded-full bg-foreground/85 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-background backdrop-blur">Before</figcaption>
+              </figure>
+              <figure className="relative overflow-hidden rounded-2xl">
+                <img src={item.after} alt={`After cleaning — ${item.label}`} loading="lazy" width={800} height={800} className="aspect-square w-full object-cover" />
+                <figcaption className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[oklch(0.2_0.05_60)] backdrop-blur" style={{ background: "var(--gradient-sun)" }}>After</figcaption>
+              </figure>
             </div>
-          );
-        })}
+            <div className="px-2 pb-1 pt-4 text-sm font-medium text-muted-foreground">{item.label}</div>
+          </div>
+        ))}
       </div>
     </section>
   );
