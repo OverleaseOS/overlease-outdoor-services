@@ -48,7 +48,7 @@ function Nav() {
   return (
     <header className="absolute top-0 left-0 right-0 z-50">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <a href="#" className="flex items-center gap-2 text-white">
+        <a href="#" className="flex items-center gap-2 text-foreground">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 backdrop-blur-md ring-1 ring-white/25">
             <Sparkles className="h-5 w-5" />
           </div>
@@ -56,7 +56,7 @@ function Nav() {
         </a>
         <a
           href={`tel:${PHONE}`}
-          className="hidden items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-md ring-1 ring-white/25 transition hover:bg-white/20 md:inline-flex"
+          className="hidden items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-foreground backdrop-blur-md ring-1 ring-white/25 transition hover:bg-white/20 md:inline-flex"
         >
           <Phone className="h-4 w-4" />
           {PHONE_DISPLAY}
@@ -79,7 +79,7 @@ function Hero() {
       />
 
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-36 md:pt-44 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pb-32">
-        <div className="text-white">
+        <div className="text-foreground">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider ring-1 ring-white/20 backdrop-blur-md">
             <BadgeCheck className="h-3.5 w-3.5" /> Licensed & Insured · Trusted by 2,000+ homes
           </span>
@@ -90,7 +90,7 @@ function Hero() {
               they vanish.
             </span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-white md:text-xl">
+          <p className="mt-6 max-w-xl text-lg text-foreground md:text-xl">
             Streak-free glass, spotless frames, immaculate sills. We clean every inch of your windows — inside, out, and everything in between.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -101,10 +101,10 @@ function Hero() {
             >
               <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
             </a>
-            <div className="flex items-center gap-2 text-sm text-white/95">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-[oklch(0.85_0.16_90)] text-[oklch(0.85_0.16_90)]" />
+                  <Star key={i} className="h-4 w-4 fill-[oklch(0.85_0.16_90)] text-primary" />
                 ))}
               </div>
               4.9 / 5 from 480+ reviews
@@ -214,17 +214,17 @@ function WhyUs() {
     <section className="relative overflow-hidden py-24 md:py-32" style={{ background: "var(--gradient-hero)" }}>
       <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, oklch(0.85 0.16 90 / 0.4), transparent 50%), radial-gradient(circle at 80% 70%, oklch(0.78 0.14 220 / 0.4), transparent 50%)" }} />
       <div className="relative mx-auto max-w-7xl px-6">
-        <div className="mx-auto max-w-2xl text-center text-white">
-          <span className="text-sm font-semibold uppercase tracking-wider text-[oklch(0.85_0.16_90)]">Why CrystalView</span>
+        <div className="mx-auto max-w-2xl text-center text-foreground">
+          <span className="text-sm font-semibold uppercase tracking-wider text-primary">Why CrystalView</span>
           <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">The difference is clear.</h2>
-          <p className="mt-4 text-lg text-white">We're obsessive about detail. You'll see — literally.</p>
+          <p className="mt-4 text-lg text-foreground">We're obsessive about detail. You'll see — literally.</p>
         </div>
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {whyUs.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="rounded-2xl bg-white/10 p-7 text-white backdrop-blur-md ring-1 ring-white/20">
-              <Icon className="h-8 w-8 text-[oklch(0.85_0.16_90)]" />
+            <div key={title} className="rounded-2xl bg-card p-7 text-foreground shadow-[var(--shadow-glass)] ring-1 ring-border">
+              <Icon className="h-8 w-8 text-primary" />
               <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/95">{desc}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
             </div>
           ))}
         </div>
@@ -306,14 +306,14 @@ function FinalCTA() {
     <section className="relative overflow-hidden py-24 md:py-32">
       <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
       <div className="absolute inset-0 -z-10 opacity-40" style={{ backgroundImage: "radial-gradient(circle at 70% 30%, oklch(0.85 0.16 90 / 0.5), transparent 50%)" }} />
-      <div className="mx-auto max-w-4xl px-6 text-center text-white">
+      <div className="mx-auto max-w-4xl px-6 text-center text-foreground">
         <h2 className="text-4xl font-bold tracking-tight md:text-6xl">Ready for windows that <span className="bg-gradient-to-r from-[oklch(0.92_0.16_90)] to-[oklch(0.85_0.18_60)] bg-clip-text text-transparent">disappear</span>?</h2>
-        <p className="mx-auto mt-5 max-w-xl text-lg text-white">One call. One spotless result. Book your clean today and see the difference.</p>
+        <p className="mx-auto mt-5 max-w-xl text-lg text-foreground">One call. One spotless result. Book your clean today and see the difference.</p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-[oklch(0.2_0.05_60)] shadow-[var(--shadow-glow)] transition hover:scale-[1.03]" style={{ background: "var(--gradient-sun)" }}>
             <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
           </a>
-          <div className="flex items-center gap-2 text-sm text-white/95">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Check className="h-4 w-4" /> Free quote · No obligation
           </div>
         </div>
