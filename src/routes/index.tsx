@@ -81,7 +81,7 @@ function Hero() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-36 md:pt-44 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pb-32">
         <div className="text-foreground">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider ring-1 ring-white/20 backdrop-blur-md">
-            <BadgeCheck className="h-3.5 w-3.5" /> Licensed & Insured · Trusted by 2,000+ homes
+            <BadgeCheck className="h-3.5 w-3.5" /> Licensed & Insured · Serving Kansas · Licensed Trusted by 2,000+ homes Insured
           </span>
 
           <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
@@ -234,8 +234,8 @@ function WhyUs() {
 }
 
 const beforeAfter = [
-  { before: before1, after: after1, label: "Front bay window — Maple Street home" },
-  { before: before2, after: after2, label: "Side sliding window — suburban residence" },
+  { before: before1, after: after1, label: "Front bay window — Wichita, KS" },
+  { before: before2, after: after2, label: "Side sliding window — Overland Park, KS" },
 ];
 
 function Gallery() {
@@ -327,7 +327,7 @@ function Footer() {
     <footer className="border-t border-border bg-card">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted-foreground md:flex-row">
         <div className="flex items-center gap-2 font-semibold text-foreground">
-          <Sparkles className="h-4 w-4 text-primary" /> CrystalView Window Cleaning
+          <Sparkles className="h-4 w-4 text-primary" /> CrystalView Window Cleaning · Kansas
         </div>
         <a href={`tel:${PHONE}`} className="hover:text-primary">{PHONE_DISPLAY}</a>
         <div>© {new Date().getFullYear()} CrystalView. All rights reserved.</div>
