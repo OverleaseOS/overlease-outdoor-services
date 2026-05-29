@@ -1,12 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Phone, Sparkles, Shield, Clock, Award, Check, ChevronDown, Home, Building2, Frame, Droplets, Star, ArrowRight } from "lucide-react";
+import { Phone, Sparkles, Shield, Clock, Award, Check, ChevronDown, Home, BadgeCheck, Frame, Droplets, Star, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import before1 from "@/assets/before-1.jpg";
+import after1 from "@/assets/after-1.jpg";
+import before2 from "@/assets/before-2.jpg";
+import after2 from "@/assets/after-2.jpg";
+
 
 const PHONE = "9133020530";
 const PHONE_DISPLAY = "913 302 0530";
