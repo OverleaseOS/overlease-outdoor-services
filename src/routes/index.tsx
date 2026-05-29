@@ -7,23 +7,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import heroImg from "@/assets/hero.jpg";
-import g1 from "@/assets/gallery-1.jpg";
-import g2 from "@/assets/gallery-2.jpg";
-import g3 from "@/assets/gallery-3.jpg";
-import g4 from "@/assets/gallery-4.jpg";
 
-const PHONE = "91333020530";
-const PHONE_DISPLAY = "+91 333 020 530";
+const PHONE = "9133020530";
+const PHONE_DISPLAY = "913 302 0530";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "CrystalView — Premium Window Cleaning. Frames, Sills & Glass." },
-      { name: "description", content: "Streak-free windows, spotless frames and sills. Book your professional window cleaning today. Call +91 333 020 530." },
+      { name: "description", content: "Streak-free windows, spotless frames and sills. Book your professional window cleaning today. Call 913 302 0530." },
       { property: "og:title", content: "CrystalView — Premium Window Cleaning" },
       { property: "og:description", content: "Streak-free windows, spotless frames and sills. Book today." },
-      { property: "og:image", content: heroImg },
     ],
   }),
   component: Index,
@@ -69,20 +63,15 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="relative isolate overflow-hidden">
-      <div className="absolute inset-0 -z-10">
-        <img
-          src={heroImg}
-          alt="Professional window cleaner at work on a high-rise glass facade"
-          width={1920}
-          height={1080}
-          className="h-full w-full object-cover"
-        />
-        <div
-          className="absolute inset-0"
-          style={{ background: "linear-gradient(120deg, oklch(0.18 0.08 245 / 0.85) 0%, oklch(0.25 0.1 240 / 0.65) 45%, oklch(0.4 0.12 235 / 0.4) 100%)" }}
-        />
-      </div>
+    <section className="relative isolate overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
+      <div
+        className="absolute inset-0 -z-10 opacity-50"
+        style={{ backgroundImage: "radial-gradient(circle at 20% 20%, oklch(0.85 0.16 90 / 0.4), transparent 50%), radial-gradient(circle at 80% 70%, oklch(0.78 0.14 220 / 0.5), transparent 55%)" }}
+      />
+      <div
+        className="absolute inset-0 -z-10 opacity-[0.08]"
+        style={{ backgroundImage: "linear-gradient(oklch(1 0 0 / 0.6) 1px, transparent 1px), linear-gradient(90deg, oklch(1 0 0 / 0.6) 1px, transparent 1px)", backgroundSize: "60px 60px" }}
+      />
 
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-36 md:pt-44 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pb-32">
         <div className="text-white">
@@ -101,7 +90,7 @@ function Hero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
               href={`tel:${PHONE}`}
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--gradient-sun)] px-6 py-3.5 text-base font-semibold text-[oklch(0.2_0.05_60)] shadow-[var(--shadow-glow)] transition hover:scale-[1.03]"
+              className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-base font-semibold text-[oklch(0.2_0.05_60)] shadow-[var(--shadow-glow)] transition hover:scale-[1.03]"
               style={{ background: "var(--gradient-sun)" }}
             >
               <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
@@ -154,7 +143,7 @@ function ContactForm() {
         </div>
         <div>
           <Label htmlFor="phone">Phone number</Label>
-          <Input id="phone" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91 ..." className="mt-1.5" maxLength={20} />
+          <Input id="phone" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Your number" className="mt-1.5" maxLength={20} />
         </div>
         <div>
           <Label htmlFor="service">Service needed</Label>
@@ -236,27 +225,39 @@ function WhyUs() {
   );
 }
 
+const galleryItems = [
+  { title: "Crystal Glass", desc: "Streak-free, edge to edge.", icon: Sparkles, className: "md:col-span-2 md:row-span-2 text-3xl" },
+  { title: "Spotless Frames", desc: "Wiped, detailed, restored.", icon: Frame },
+  { title: "Clean Sills", desc: "Every corner, dust-free.", icon: Home },
+  { title: "Tracks & Screens", desc: "The bits everyone forgets.", icon: Droplets, className: "md:col-span-2" },
+];
+
 function Gallery() {
-  const items = [
-    { src: g1, alt: "Squeegee cleaning sparkling glass window", className: "md:col-span-2 md:row-span-2" },
-    { src: g2, alt: "Pristine windows on a modern home" },
-    { src: g3, alt: "Detailed cleaning of a white window frame and sill" },
-    { src: g4, alt: "Reflective glass office building facade", className: "md:col-span-2" },
-  ];
   return (
     <section id="gallery" className="mx-auto max-w-7xl px-6 py-24 md:py-32">
       <div className="mx-auto max-w-2xl text-center">
-        <span className="text-sm font-semibold uppercase tracking-wider text-primary">Our work</span>
-        <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">See for yourself.</h2>
-        <p className="mt-4 text-lg text-muted-foreground">Real jobs. Real shine.</p>
+        <span className="text-sm font-semibold uppercase tracking-wider text-primary">What you get</span>
+        <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">A full window detail.</h2>
+        <p className="mt-4 text-lg text-muted-foreground">Not just the glass — everything that makes a window a window.</p>
       </div>
-      <div className="mt-12 grid auto-rows-[220px] grid-cols-1 gap-4 md:grid-cols-4">
-        {items.map((it, i) => (
-          <div key={i} className={`group relative overflow-hidden rounded-2xl shadow-[var(--shadow-glass)] ${it.className ?? ""}`}>
-            <img src={it.src} alt={it.alt} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition group-hover:opacity-100" />
-          </div>
-        ))}
+      <div className="mt-12 grid auto-rows-[180px] grid-cols-1 gap-4 md:grid-cols-4">
+        {galleryItems.map((it) => {
+          const Icon = it.icon;
+          return (
+            <div
+              key={it.title}
+              className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl p-6 text-white shadow-[var(--shadow-card)] transition hover:-translate-y-1 ${it.className ?? ""}`}
+              style={{ background: "var(--gradient-hero)" }}
+            >
+              <div className="absolute inset-0 opacity-40 transition group-hover:opacity-60" style={{ backgroundImage: "radial-gradient(circle at 80% 20%, oklch(0.85 0.16 90 / 0.55), transparent 55%)" }} />
+              <Icon className="relative h-8 w-8 text-[oklch(0.92_0.16_90)]" />
+              <div className="relative">
+                <div className="text-xl font-semibold tracking-tight md:text-2xl">{it.title}</div>
+                <div className="mt-1 text-sm text-white/80">{it.desc}</div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
@@ -264,7 +265,7 @@ function Gallery() {
 
 const faqs = [
   { q: "Do you clean window frames and sills too?", a: "Yes — that's our specialty. Glass, frames, sills, tracks, and screens are all included in every standard clean." },
-  { q: "How much does it cost?", a: "Pricing depends on the number of windows and access. Most homes are between a small flat fee per window. Call us for a free, no-obligation quote." },
+  { q: "How much does it cost?", a: "Pricing depends on the number of windows and access. Most homes are a small flat fee per window. Call us for a free, no-obligation quote." },
   { q: "Are you insured?", a: "Absolutely. We carry full public liability insurance, so you're protected on every job." },
   { q: "How long does it take?", a: "An average home (10–15 windows) takes around 1.5 to 2.5 hours, depending on condition and access." },
   { q: "What if it rains after?", a: "Rain on clean glass doesn't leave streaks — only dirt does. But if you're unhappy, we'll come back free of charge." },
