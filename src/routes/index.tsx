@@ -90,7 +90,7 @@ function Hero() {
               they vanish.
             </span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-white/85 md:text-xl">
+          <p className="mt-6 max-w-xl text-lg text-white md:text-xl">
             Streak-free glass, spotless frames, immaculate sills. We clean every inch of your windows — inside, out, and everything in between.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -101,7 +101,7 @@ function Hero() {
             >
               <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
             </a>
-            <div className="flex items-center gap-2 text-sm text-white/80">
+            <div className="flex items-center gap-2 text-sm text-white/95">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-4 w-4 fill-[oklch(0.85_0.16_90)] text-[oklch(0.85_0.16_90)]" />
@@ -217,14 +217,14 @@ function WhyUs() {
         <div className="mx-auto max-w-2xl text-center text-white">
           <span className="text-sm font-semibold uppercase tracking-wider text-[oklch(0.85_0.16_90)]">Why CrystalView</span>
           <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">The difference is clear.</h2>
-          <p className="mt-4 text-lg text-white/85">We're obsessive about detail. You'll see — literally.</p>
+          <p className="mt-4 text-lg text-white">We're obsessive about detail. You'll see — literally.</p>
         </div>
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {whyUs.map(({ icon: Icon, title, desc }) => (
             <div key={title} className="rounded-2xl bg-white/10 p-7 text-white backdrop-blur-md ring-1 ring-white/20">
               <Icon className="h-8 w-8 text-[oklch(0.85_0.16_90)]" />
               <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-white/80">{desc}</p>
+              <p className="mt-2 text-sm leading-relaxed text-white/95">{desc}</p>
             </div>
           ))}
         </div>
@@ -308,12 +308,12 @@ function FinalCTA() {
       <div className="absolute inset-0 -z-10 opacity-40" style={{ backgroundImage: "radial-gradient(circle at 70% 30%, oklch(0.85 0.16 90 / 0.5), transparent 50%)" }} />
       <div className="mx-auto max-w-4xl px-6 text-center text-white">
         <h2 className="text-4xl font-bold tracking-tight md:text-6xl">Ready for windows that <span className="bg-gradient-to-r from-[oklch(0.92_0.16_90)] to-[oklch(0.85_0.18_60)] bg-clip-text text-transparent">disappear</span>?</h2>
-        <p className="mx-auto mt-5 max-w-xl text-lg text-white/85">One call. One spotless result. Book your clean today and see the difference.</p>
+        <p className="mx-auto mt-5 max-w-xl text-lg text-white">One call. One spotless result. Book your clean today and see the difference.</p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-[oklch(0.2_0.05_60)] shadow-[var(--shadow-glow)] transition hover:scale-[1.03]" style={{ background: "var(--gradient-sun)" }}>
             <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
           </a>
-          <div className="flex items-center gap-2 text-sm text-white/80">
+          <div className="flex items-center gap-2 text-sm text-white/95">
             <Check className="h-4 w-4" /> Free quote · No obligation
           </div>
         </div>
