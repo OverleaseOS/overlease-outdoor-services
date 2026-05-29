@@ -104,7 +104,7 @@ function Hero() {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-[oklch(0.85_0.16_90)] text-[oklch(0.85_0.16_90)]" />
+                  <Star key={i} className="h-4 w-4 fill-[oklch(0.85_0.16_90)] text-primary" />
                 ))}
               </div>
               4.9 / 5 from 480+ reviews
@@ -215,14 +215,14 @@ function WhyUs() {
       <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, oklch(0.85 0.16 90 / 0.4), transparent 50%), radial-gradient(circle at 80% 70%, oklch(0.78 0.14 220 / 0.4), transparent 50%)" }} />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center text-foreground">
-          <span className="text-sm font-semibold uppercase tracking-wider text-[oklch(0.85_0.16_90)]">Why CrystalView</span>
+          <span className="text-sm font-semibold uppercase tracking-wider text-primary">Why CrystalView</span>
           <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">The difference is clear.</h2>
           <p className="mt-4 text-lg text-foreground">We're obsessive about detail. You'll see — literally.</p>
         </div>
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {whyUs.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="rounded-2xl bg-white/10 p-7 text-foreground backdrop-blur-md ring-1 ring-white/20">
-              <Icon className="h-8 w-8 text-[oklch(0.85_0.16_90)]" />
+            <div key={title} className="rounded-2xl bg-card p-7 text-foreground shadow-[var(--shadow-glass)] ring-1 ring-border">
+              <Icon className="h-8 w-8 text-primary" />
               <h3 className="mt-4 text-lg font-semibold">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
             </div>
