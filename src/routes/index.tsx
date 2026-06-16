@@ -121,14 +121,29 @@ function Hero() {
   );
 }
 
+const quoteSchema = z.object({
+  name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be under 100 characters" }),
+  phone: z.string().trim().min(1, { message: "Phone number is required" }).max(20, { message: "Phone must be under 20 characters" }),
+  service: z.string().trim().max(120, { message: "Service must be under 120 characters" }).optional(),
+  message: z.string().trim().max(500, { message: "Details must be under 500 characters" }).optional(),
+});
+
 function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", service: "", message: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.phone.trim()) {
-      toast.error("Please add your name and phone number.");
+    setErrors({});
+    const result = quoteSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach((err) => {
+        if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
+      });
+      setErrors(fieldErrors);
+      toast.error("Please fix the highlighted fields.");
       return;
     }
     setLoading(true);
@@ -139,27 +154,55 @@ function ContactForm() {
     }, 800);
   };
 
+  const inputError = (field: string) =>
+    errors[field] ? "border-destructive focus-visible:ring-destructive" : "";
+
   return (
     <div className="rounded-3xl bg-white/95 p-7 shadow-[var(--shadow-card)] backdrop-blur-xl ring-1 ring-white/40 md:p-8">
       <div className="mb-5">
         <h2 className="text-2xl font-bold tracking-tight text-foreground">Get a free quote</h2>
         <p className="mt-1 text-sm text-muted-foreground">No commitment. We reply within 15 minutes.</p>
       </div>
-      <form onSubmit={submit} className="space-y-4">
+      <form onSubmit={submit} className="space-y-4" noValidate>
         <div>
-          <Label htmlFor="name">Your name</Label>
-          <Input id="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Jane Doe" className="mt-1.5" maxLength={100} />
+          <Label htmlFor="name" className="flex items-center gap-1">
+            Your name <span className="text-destructive" aria-hidden="true">*</span>
+          </Label>
+          <Input
+            id="name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            placeholder="Jane Doe"
+            className={`mt-1.5 ${inputError("name")}`}
+            maxLength={100}
+            aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? "name-error" : undefined}
+          />
+          {errors.name && <p id="name-error" className="mt-1 text-xs text-destructive">{errors.name}</p>}
         </div>
         <div>
-          <Label htmlFor="phone">Phone number</Label>
-          <Input id="phone" type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Your number" className="mt-1.5" maxLength={20} />
+          <Label htmlFor="phone" className="flex items-center gap-1">
+            Phone number <span className="text-destructive" aria-hidden="true">*</span>
+          </Label>
+          <Input
+            id="phone"
+            type="tel"
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            placeholder="Your number"
+            className={`mt-1.5 ${inputError("phone")}`}
+            maxLength={20}
+            aria-invalid={!!errors.phone}
+            aria-describedby={errors.phone ? "phone-error" : undefined}
+          />
+          {errors.phone && <p id="phone-error" className="mt-1 text-xs text-destructive">{errors.phone}</p>}
         </div>
         <div>
           <Label htmlFor="service">Service needed</Label>
           <Input id="service" value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })} placeholder="e.g. Residential, 12 windows" className="mt-1.5" maxLength={120} />
         </div>
         <div>
-          <Label htmlFor="message">Details (optional)</Label>
+          <Label htmlFor="message">Details <span className="text-muted-foreground">(optional)</span></Label>
           <Textarea id="message" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Frames, sills, screens..." className="mt-1.5 min-h-[80px]" maxLength={500} />
         </div>
         <Button type="submit" disabled={loading} className="w-full rounded-full py-6 text-base font-semibold shadow-[var(--shadow-glow)]" style={{ background: "var(--gradient-primary)" }}>
