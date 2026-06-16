@@ -70,9 +70,7 @@ function EstimatesPage() {
               </div>
               {r.address && (
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.address)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`geo:0,0?q=${encodeURIComponent(r.address)}`}
                   className="mt-1 text-sm text-primary hover:underline"
                 >
                   {r.address}
