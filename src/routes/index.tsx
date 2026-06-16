@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Burns Clear — Kansas Window Cleaning. Frames, Sills & Glass." },
       { name: "description", content: "Professional residential window cleaning across the Kansas area. Streak-free glass, spotless frames and sills. Call 913 302 0530." },
-      { property: "og:title", content: "VB Clear — Kansas Window Cleaning" },
+      { property: "og:title", content: "Burns Clear — Kansas Window Cleaning" },
       { property: "og:description", content: "Residential window cleaning across Kansas. Licensed, insured, streak-free." },
 
     ],
@@ -53,7 +53,7 @@ function Nav() {
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 backdrop-blur-md ring-1 ring-white/25">
             <Sparkles className="h-5 w-5" />
           </div>
-          <span className="text-lg font-semibold tracking-tight">VB Clear</span>
+          <span className="text-lg font-semibold tracking-tight">Burns Clear</span>
         </a>
         <a
           href={`tel:${PHONE}`}
@@ -216,7 +216,7 @@ function WhyUs() {
       <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, oklch(0.85 0.16 90 / 0.4), transparent 50%), radial-gradient(circle at 80% 70%, oklch(0.78 0.14 220 / 0.4), transparent 50%)" }} />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center text-foreground">
-          <span className="text-sm font-semibold uppercase tracking-wider text-primary">Why VB Clear</span>
+          <span className="text-sm font-semibold uppercase tracking-wider text-primary">Why Burns Clear</span>
           <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">The difference is clear.</h2>
           <p className="mt-4 text-lg text-foreground">We're obsessive about detail. You'll see — literally.</p>
         </div>
@@ -328,10 +328,10 @@ function Footer() {
     <footer className="border-t border-border bg-card">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted-foreground md:flex-row">
         <div className="flex items-center gap-2 font-semibold text-foreground">
-          <Sparkles className="h-4 w-4 text-primary" /> VB Clear Window Cleaning · Kansas
+          <Sparkles className="h-4 w-4 text-primary" /> Burns Clear Window Cleaning · Kansas
         </div>
         <a href={`tel:${PHONE}`} className="hover:text-primary">{PHONE_DISPLAY}</a>
-        <div>© {new Date().getFullYear()} VB Clear. All rights reserved.</div>
+        <div>© {new Date().getFullYear()} Burns Clear. All rights reserved.</div>
       </div>
     </footer>
   );
