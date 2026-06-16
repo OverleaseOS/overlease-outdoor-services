@@ -67,8 +67,46 @@ const navLinks = [
   { href: "#quote", label: "Contact" },
 ];
 
+function useIsAdmin() {
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    const check = async () => {
+      const { data: userData } = await supabase.auth.getUser();
+      if (!active) return;
+      if (!userData.user) {
+        setIsAdmin(false);
+        return;
+      }
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userData.user.id);
+      if (!active) return;
+      setIsAdmin((roles ?? []).some((r) => r.role === "admin"));
+    };
+
+    check();
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") {
+        check();
+      }
+    });
+
+    return () => {
+      active = false;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
+  return isAdmin;
+}
+
 function Nav() {
   const [open, setOpen] = useState(false);
+  const isAdmin = useIsAdmin();
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
@@ -87,6 +125,15 @@ function Nav() {
               {l.label}
             </a>
           ))}
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary/90 px-3 py-1.5 text-sm font-medium text-primary-foreground transition hover:bg-primary"
+            >
+              <ShieldCheck className="h-3.5 w-3.5" />
+              Estimate Requests
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -122,6 +169,16 @@ function Nav() {
                 {l.label}
               </a>
             ))}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center gap-2 rounded-xl px-4 py-3 text-base font-semibold text-primary"
+              >
+                <ShieldCheck className="h-4 w-4" />
+                Estimate Requests
+              </Link>
+            )}
             <a
               href={`tel:${PHONE}`}
               onClick={() => setOpen(false)}
