@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { z } from "zod";
@@ -182,12 +183,13 @@ const quoteSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be under 100 characters" }),
   phone: z.string().trim().min(1, { message: "Phone number is required" }).max(20, { message: "Phone must be under 20 characters" }),
   service: z.string().trim().max(120, { message: "Service must be under 120 characters" }).optional(),
+  windowType: z.string().trim().max(60, { message: "Window type must be under 60 characters" }).optional(),
   message: z.string().trim().max(500, { message: "Details must be under 500 characters" }).optional(),
 });
 
 function ContactForm() {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", service: "", message: "" });
+  const [form, setForm] = useState({ name: "", phone: "", service: "", windowType: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const submit = (e: React.FormEvent) => {
@@ -207,7 +209,7 @@ function ContactForm() {
     setTimeout(() => {
       setLoading(false);
       toast.success("Thanks! We'll call you back within 15 minutes.");
-      setForm({ name: "", phone: "", service: "", message: "" });
+      setForm({ name: "", phone: "", service: "", windowType: "", message: "" });
     }, 800);
   };
 
@@ -257,6 +259,25 @@ function ContactForm() {
         <div>
           <Label htmlFor="service">Service needed</Label>
           <Input id="service" value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })} placeholder="e.g. Residential, 12 windows" className="mt-1.5" maxLength={120} />
+        </div>
+        <div>
+          <Label htmlFor="windowType">Window type</Label>
+          <Select
+            value={form.windowType}
+            onValueChange={(value) => setForm({ ...form, windowType: value })}
+          >
+            <SelectTrigger id="windowType" className="mt-1.5 w-full">
+              <SelectValue placeholder="Select window type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="single-pane">Single Pane</SelectItem>
+              <SelectItem value="french">French Windows</SelectItem>
+              <SelectItem value="double-pane">Double Pane</SelectItem>
+              <SelectItem value="bay">Bay / Bow</SelectItem>
+              <SelectItem value="sliding">Sliding</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <Label htmlFor="message">Details <span className="text-muted-foreground">(optional)</span></Label>
