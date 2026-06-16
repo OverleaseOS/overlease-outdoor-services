@@ -88,13 +88,13 @@ function Hero() {
           </span>
 
           <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
-            Windows so clean,<br />
+            Outdoor services,<br />
             <span className="bg-gradient-to-r from-[oklch(0.92_0.16_90)] to-[oklch(0.85_0.18_60)] bg-clip-text text-transparent">
-              they vanish.
+              done right.
             </span>
           </h1>
           <p className="mt-6 max-w-xl text-lg text-foreground md:text-xl">
-            Streak-free glass, spotless frames, immaculate sills. We clean every inch of your windows — inside, out, and everything in between.
+            Professional window cleaning and outdoor property care across Kansas. Spotless results, reliable service, every time.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
