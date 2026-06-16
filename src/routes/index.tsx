@@ -381,7 +381,7 @@ const whyUs = [
   { icon: BadgeCheck, title: "Licensed & Insured", desc: "Fully licensed and insured — your home and our team are protected on every job." },
   { icon: Sparkles, title: "Streak-free guarantee", desc: "If you see a streak, we come back. Period." },
   { icon: Clock, title: "On time, every time", desc: "We respect your schedule. 15-min arrival window confirmation." },
-  { icon: Award, title: "5-star rated team", desc: "Trained residential specialists. 480+ five-star reviews and counting." },
+  { icon: Award, title: "5-star rated team", desc: "Trained residential specialists. Five-star reviews from local homeowners." },
 ];
 
 
