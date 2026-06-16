@@ -363,7 +363,7 @@ function Services() {
       <div className="mx-auto max-w-2xl text-center">
         <span className="text-sm font-semibold uppercase tracking-wider text-primary">What we do</span>
         <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">Every part of your window. Cleaned.</h2>
-        <p className="mt-4 text-lg text-muted-foreground">From the glass to the tiniest corner of the sill — nothing gets missed.</p>
+        <p className="mt-4 text-lg text-muted-foreground">From the glass to the very corner of every sill, nothing gets missed.</p>
       </div>
       <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {services.map(({ icon: Icon, title, desc }) => (
@@ -399,7 +399,7 @@ function WhyUs() {
         <div className="mx-auto max-w-2xl text-center text-foreground">
           <span className="text-sm font-semibold uppercase tracking-wider text-primary">Why {BRAND}</span>
           <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">The difference is clear.</h2>
-          <p className="mt-4 text-lg text-foreground">We're obsessive about detail. You'll see — literally.</p>
+          <p className="mt-4 text-lg text-foreground">We're obsessed with detail. You'll see — literally.</p>
         </div>
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {whyUs.map(({ icon: Icon, title, desc }) => (
