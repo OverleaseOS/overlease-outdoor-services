@@ -102,6 +102,14 @@ function NotifySetupPage() {
     }
   }
 
+  useEffect(() => {
+    // Dynamically inject OneSignal SDK script
+    const script = document.createElement('script')
+    script.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js'
+    script.defer = true
+    document.head.appendChild(script)
+  }, [])
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-md space-y-6">
@@ -188,11 +196,6 @@ function NotifySetupPage() {
           This page is not linked anywhere on the public site. Only people with this URL can access it.
         </p>
       </div>
-
-      <script
-        src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
-        defer
-      />
     </div>
   )
 }
