@@ -480,3 +480,24 @@ function Footer() {
     </footer>
   );
 }
+
+function FloatingQuoteButton() {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 600);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <button
+      onClick={() => document.getElementById("quote")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+      className={`fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition-all hover:scale-[1.03] ${show ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0 pointer-events-none"}`}
+      style={{ background: "var(--gradient-sun)" }}
+      aria-label="Scroll to quote form"
+    >
+      <ArrowRight className="h-4 w-4 rotate-[-90deg]" /> Get a Quote
+    </button>
+  );
+}
