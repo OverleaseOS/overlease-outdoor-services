@@ -193,13 +193,42 @@ function AddressAutocomplete({ value, onChange, error }: { value: string; onChan
     }
     setLoading(true);
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&limit=20&countrycodes=us`);
-      if (!res.ok) throw new Error("Failed");
-      const data: Array<{ display_name: string }> = await res.json();
+      // Predict: if the user hasn't typed a street-type suffix yet,
+      // also query Nominatim with common suffixes appended so partial
+      // inputs like "4204 W 93rd" still return results.
+      const tokens = normalizeAddress(q).split(" ").filter(Boolean);
+      const lastToken = tokens[tokens.length - 1] ?? "";
+      const STREET_TYPES = new Set([
+        "street","avenue","road","boulevard","drive","lane","court","place",
+        "highway","parkway","circle","terrace","trail","way",
+      ]);
+      const variants = [q];
+      if (!STREET_TYPES.has(lastToken)) {
+        for (const suffix of ["street","avenue","road","drive","boulevard","lane","court"]) {
+          variants.push(`${q} ${suffix}`);
+        }
+      }
+      const results = await Promise.all(
+        variants.map((v) =>
+          fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(v)}&format=json&addressdetails=1&limit=10&countrycodes=us`)
+            .then((r) => (r.ok ? r.json() : []))
+            .catch(() => [])
+        )
+      );
+      const seen = new Set<string>();
+      const merged: Array<{ display_name: string }> = [];
+      for (const arr of results) {
+        for (const item of (arr as Array<{ display_name: string }>) || []) {
+          if (item?.display_name && !seen.has(item.display_name)) {
+            seen.add(item.display_name);
+            merged.push(item);
+          }
+        }
+      }
       const normalizedQuery = normalizeAddress(q);
-      const filtered = (data || []).filter((s) =>
-        normalizeAddress(s.display_name).startsWith(normalizedQuery)
-      ).slice(0, 5);
+      const filtered = merged
+        .filter((s) => normalizeAddress(s.display_name).startsWith(normalizedQuery))
+        .slice(0, 5);
       setSuggestions(filtered);
       setOpen(filtered.length > 0);
     } catch {
