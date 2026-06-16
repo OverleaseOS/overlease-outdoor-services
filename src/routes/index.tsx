@@ -17,7 +17,7 @@ import windowBefore3 from "@/assets/window-before-3.jpg.asset.json";
 import windowAfter3 from "@/assets/window-after-3.jpg.asset.json";
 import windowBefore4 from "@/assets/window-before-4.jpg.asset.json";
 import windowAfter4 from "@/assets/window-after-4.jpg.asset.json";
-import logo from "@/assets/logo.png";
+import logoAsset from "@/assets/overlease-logo.png.asset.json";
 
 
 const PHONE = "9134247527";
@@ -66,9 +66,8 @@ function Nav() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <a href="#" className="flex items-center gap-2 text-foreground">
-          <img src={logo} alt={`${BRAND} logo`} className="h-9 w-9 rounded-lg object-contain" />
-          <span className="text-lg font-semibold tracking-tight">{BRAND}</span>
+        <a href="#" className="flex items-center text-foreground">
+          <img src={logoAsset.url} alt={`${BRAND} logo`} className="h-12 w-auto object-contain" />
         </a>
 
         <nav className="hidden items-center gap-1 rounded-full bg-white/10 px-2 py-1.5 backdrop-blur-md ring-1 ring-white/20 lg:flex">
