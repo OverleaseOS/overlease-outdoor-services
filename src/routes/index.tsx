@@ -79,7 +79,7 @@ function Hero() {
           </span>
 
           <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
-            Outdoor services,<br />
+            Outdoor Services,<br />
             <span className="bg-gradient-to-r from-[oklch(0.65_0.15_250)] to-[oklch(0.55_0.18_250)] bg-clip-text text-transparent">
               done right.
             </span>
@@ -170,7 +170,7 @@ function ContactForm() {
       <form onSubmit={submit} className="space-y-4" noValidate>
         <div>
           <Label htmlFor="name" className="flex items-center gap-1">
-            Your name <span className="text-destructive" aria-hidden="true">*</span>
+            Your Name<br /><span className="text-destructive" aria-hidden="true">*</span>
           </Label>
           <Input
             id="name"
