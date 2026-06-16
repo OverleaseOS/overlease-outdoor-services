@@ -12,9 +12,11 @@ type EstimateRow = {
   created_at: string
   name: string
   phone: string
+  address: string | null
   service: string | null
   details: string | null
 }
+
 
 function EstimatesPage() {
   const [rows, setRows] = useState<EstimateRow[] | null>(null)
@@ -25,9 +27,10 @@ function EstimatesPage() {
     ;(async () => {
       const { data, error } = await supabase
         .from('estimate_requests')
-        .select('id, created_at, name, phone, service, details')
+        .select('id, created_at, name, phone, address, service, details')
         .order('created_at', { ascending: false })
         .limit(200)
+
       if (!active) return
       if (error) setError(error.message)
       else setRows((data as EstimateRow[]) ?? [])
