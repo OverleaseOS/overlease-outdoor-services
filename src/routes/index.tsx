@@ -259,26 +259,56 @@ function ContactForm() {
         </div>
         <div>
           <Label htmlFor="service">Service needed</Label>
-          <Input id="service" value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })} placeholder="e.g. Residential, 12 windows" className="mt-1.5" maxLength={120} />
-        </div>
-        <div>
-          <Label htmlFor="windowType">Window type</Label>
           <Select
-            value={form.windowType}
-            onValueChange={(value) => setForm({ ...form, windowType: value })}
+            value={form.service}
+            onValueChange={(value) => setForm({ ...form, service: value })}
           >
-            <SelectTrigger id="windowType" className="mt-1.5 w-full">
-              <SelectValue placeholder="Select window type" />
+            <SelectTrigger id="service" className="mt-1.5 w-full">
+              <SelectValue placeholder="Select a service" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="single-pane">Single Pane</SelectItem>
-              <SelectItem value="french">French Windows</SelectItem>
-              <SelectItem value="double-pane">Double Pane</SelectItem>
-              <SelectItem value="bay">Bay / Bow</SelectItem>
-              <SelectItem value="sliding">Sliding</SelectItem>
+              <SelectItem value="exterior">Exterior Window Cleaning</SelectItem>
+              <SelectItem value="interior">Interior Window Cleaning</SelectItem>
+              <SelectItem value="full">Full Service (Interior + Exterior)</SelectItem>
+              <SelectItem value="frames">Frames &amp; Sills Cleaning</SelectItem>
+              <SelectItem value="screens">Screen Cleaning</SelectItem>
               <SelectItem value="other">Other</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="windowCount">Number of windows</Label>
+            <Input
+              id="windowCount"
+              type="number"
+              min={1}
+              value={form.windowCount}
+              onChange={(e) => setForm({ ...form, windowCount: e.target.value })}
+              placeholder="e.g. 12"
+              className="mt-1.5"
+              maxLength={10}
+            />
+          </div>
+          <div>
+            <Label htmlFor="windowType">Window type</Label>
+            <Select
+              value={form.windowType}
+              onValueChange={(value) => setForm({ ...form, windowType: value })}
+            >
+              <SelectTrigger id="windowType" className="mt-1.5 w-full">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="single-pane">Single Pane</SelectItem>
+                <SelectItem value="french">French Windows</SelectItem>
+                <SelectItem value="double-pane">Double Pane</SelectItem>
+                <SelectItem value="bay">Bay / Bow</SelectItem>
+                <SelectItem value="sliding">Sliding</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div>
           <Label htmlFor="message">Details <span className="text-muted-foreground">(optional)</span></Label>
