@@ -176,7 +176,7 @@ function ContactForm() {
             id="name"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            placeholder="Jane Doe"
+            placeholder="Your Name"
             className={`mt-1.5 ${inputError("name")}`}
             maxLength={100}
             aria-invalid={!!errors.name}
@@ -186,7 +186,7 @@ function ContactForm() {
         </div>
         <div>
           <Label htmlFor="phone" className="flex items-center gap-1">
-            Phone number <span className="text-destructive" aria-hidden="true">*</span>
+            Phone Number <span className="text-destructive" aria-hidden="true">*</span>
           </Label>
           <Input
             id="phone"
