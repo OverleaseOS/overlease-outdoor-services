@@ -58,7 +58,7 @@ const QuoteNotification = ({
 
         <Hr style={hr} />
         <Text style={footer}>
-          Call them back within 15 minutes to keep your reply-time promise.
+          Call them back as soon as possible to keep your reply-time promise.
         </Text>
       </Container>
     </Body>
