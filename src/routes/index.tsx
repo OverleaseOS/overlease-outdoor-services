@@ -429,6 +429,55 @@ function Gallery() {
   );
 }
 
+const testimonials = [
+  {
+    name: "Sarah M.",
+    location: "Overland Park",
+    text: "Overlease made our windows look brand new. The crew was professional, on time, and left zero mess. Already booked our next clean.",
+    rating: 5,
+  },
+  {
+    name: "David & Lisa K.",
+    location: "Leawood",
+    text: "We had 30+ windows including some tough French panes. They handled everything perfectly — glass, frames, sills, the lot. Highly recommend.",
+    rating: 5,
+  },
+  {
+    name: "James R.",
+    location: "Olathe",
+    text: "Fair price, great communication, and the streak-free guarantee actually means something. Best window service we've used in Kansas.",
+    rating: 5,
+  },
+];
+
+function Testimonials() {
+  return (
+    <section id="reviews" className="mx-auto max-w-7xl px-6 py-24 md:py-32">
+      <div className="mx-auto max-w-2xl text-center">
+        <span className="text-sm font-semibold uppercase tracking-wider text-primary">Reviews</span>
+        <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">What customers say</h2>
+        <p className="mt-4 text-lg text-muted-foreground">Real feedback from real Kansas homeowners.</p>
+      </div>
+      <div className="mt-14 grid gap-6 md:grid-cols-3">
+        {testimonials.map((t, i) => (
+          <div key={i} className="rounded-3xl border border-border bg-card p-7 shadow-[var(--shadow-card)]">
+            <div className="flex gap-0.5">
+              {[...Array(5)].map((_, s) => (
+                <Star key={s} className={`h-4 w-4 ${s < t.rating ? "fill-primary text-primary" : "text-muted"}`} />
+              ))}
+            </div>
+            <p className="mt-4 text-sm leading-relaxed text-foreground">&ldquo;{t.text}&rdquo;</p>
+            <div className="mt-5">
+              <div className="text-sm font-semibold text-foreground">{t.name}</div>
+              <div className="text-xs text-muted-foreground">{t.location}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 const faqs = [
   { q: "Do you clean window frames and sills too?", a: "Yes — that's our specialty. Glass, frames, sills, tracks, and screens are all included in every standard clean." },
   { q: "How much does it cost?", a: "Pricing depends on the number of windows and access. Most homes are a small flat fee per window. Call us for a free, no-obligation quote." },
