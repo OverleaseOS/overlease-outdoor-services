@@ -35,10 +35,7 @@ function AdminLayout() {
             <span className="font-semibold text-foreground">Admin</span>
             <nav className="flex gap-4 text-sm">
               <Link to="/admin" activeOptions={{ exact: true }} activeProps={{ className: 'text-primary font-medium' }} className="text-muted-foreground hover:text-foreground">
-                Estimates
-              </Link>
-              <Link to="/admin/notify-setup" activeProps={{ className: 'text-primary font-medium' }} className="text-muted-foreground hover:text-foreground">
-                Notifications
+                Estimate Requests
               </Link>
             </nav>
           </div>
