@@ -407,7 +407,7 @@ function Testimonials() {
 
 const faqs = [
   { q: "Do you clean window frames and sills too?", a: "Yes — that's our specialty. Glass, frames, sills, tracks, and screens are all included in every standard clean." },
-  { q: "How much does it cost?", a: "Pricing depends on the number of windows and access. Most homes are a small flat fee per window. Call us for a free, no-obligation quote." },
+  { q: "How much does it cost?", a: "Pricing depends on the number of windows and access. Most homes are a small flat fee per window. Use the quote request form above for a free, no-obligation quote." },
   { q: "Are you insured?", a: "Absolutely. We carry full public liability insurance, so you're protected on every job." },
   { q: "How long does it take?", a: "An average home (10–15 windows) takes around 1.5 to 2.5 hours, depending on condition and access." },
   { q: "What if it rains after?", a: "Rain on clean glass doesn't leave streaks — only dirt does. But if you're unhappy, we'll come back free of charge." },
