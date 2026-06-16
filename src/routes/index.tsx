@@ -18,6 +18,7 @@ import windowAfter3 from "@/assets/window-after-3.jpg.asset.json";
 import windowBefore4 from "@/assets/window-before-4.jpg.asset.json";
 import windowAfter4 from "@/assets/window-after-4.jpg.asset.json";
 import logoAsset from "@/assets/overlease-logo.png.asset.json";
+import ogAsset from "@/assets/overlease-og.png.asset.json";
 
 
 const PHONE = "9134247527";
@@ -28,10 +29,13 @@ const BRAND = "Overlease Outdoor Services";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Overlease Outdoor Services — Kansas Window Cleaning" },
+      { title: "Overlease Outdoor Services" },
       { name: "description", content: "Professional residential window cleaning across the Kansas area. Streak-free glass, spotless frames and sills. Call 913 424 7527." },
-      { property: "og:title", content: "Overlease Outdoor Services — Kansas Window Cleaning" },
+      { property: "og:title", content: "Overlease Outdoor Services" },
       { property: "og:description", content: "Residential window cleaning across Kansas. Licensed, insured, streak-free." },
+      { property: "og:image", content: ogAsset.url },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: ogAsset.url },
     ],
   }),
   component: Index,
