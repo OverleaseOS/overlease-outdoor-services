@@ -153,7 +153,7 @@ function AddressAutocomplete({ value, onChange, error }: { value: string; onChan
     }
     setLoading(true);
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&limit=5`);
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&limit=5&countrycodes=us`);
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
       setSuggestions(data || []);
