@@ -209,7 +209,7 @@ function ContactForm() {
     setTimeout(() => {
       setLoading(false);
       toast.success("Thanks! We'll call you back within 15 minutes.");
-      setForm({ name: "", phone: "", service: "", message: "" });
+      setForm({ name: "", phone: "", service: "", windowType: "", message: "" });
     }, 800);
   };
 
