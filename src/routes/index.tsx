@@ -123,6 +123,46 @@ const quoteSchema = z.object({
   message: z.string().trim().max(500, { message: "Details must be under 500 characters" }).optional(),
 });
 
+const ADDRESS_ABBREVIATIONS: Record<string, string> = {
+  st: "street", str: "street", street: "street",
+  ave: "avenue", av: "avenue", avenue: "avenue",
+  rd: "road", road: "road",
+  blvd: "boulevard", blv: "boulevard", boulevard: "boulevard",
+  dr: "drive", drv: "drive", drive: "drive",
+  ln: "lane", lane: "lane",
+  ct: "court", crt: "court", court: "court",
+  pl: "place", place: "place",
+  hwy: "highway", hiwy: "highway", highway: "highway",
+  pkwy: "parkway", parkway: "parkway",
+  cir: "circle", circle: "circle",
+  ter: "terrace", terr: "terrace", terrace: "terrace",
+  trl: "trail", trail: "trail",
+  way: "way",
+  n: "north", north: "north",
+  s: "south", south: "south",
+  e: "east", east: "east",
+  w: "west", west: "west",
+  ne: "northeast", northeast: "northeast",
+  nw: "northwest", northwest: "northwest",
+  se: "southeast", southeast: "southeast",
+  sw: "southwest", southwest: "southwest",
+  apt: "apartment", apartment: "apartment",
+  ste: "suite", suite: "suite",
+  fl: "floor", floor: "floor",
+  rm: "room", room: "room",
+};
+
+function normalizeAddress(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[.,#]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((tok) => ADDRESS_ABBREVIATIONS[tok] ?? tok)
+    .join(" ")
+    .trim();
+}
+
 function AddressAutocomplete({ value, onChange, error }: { value: string; onChange: (val: string) => void; error?: string }) {
   const [query, setQuery] = useState(value);
   const [suggestions, setSuggestions] = useState<Array<{ display_name: string }>>([]);
