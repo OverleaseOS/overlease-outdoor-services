@@ -115,9 +115,6 @@ export const Route = createFileRoute('/api/public/submit-quote')({
                 console.error('OneSignal notify failed', res.status, await res.text())
               }
             }
-            if (!res.ok) {
-              console.error('OneSignal notify failed', res.status, await res.text())
-            }
           } else {
             console.warn('OneSignal env vars missing; skipping push')
           }
