@@ -202,7 +202,7 @@ function ContactForm() {
   const [form, setForm] = useState({ name: "", phone: "", service: "", windowCount: "", windowType: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
     const result = quoteSchema.safeParse(form);
@@ -216,11 +216,28 @@ function ContactForm() {
       return;
     }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const detailParts = [
+        form.service && `Service: ${form.service}`,
+        form.windowCount && `Windows: ${form.windowCount}`,
+        form.windowType && `Type: ${form.windowType}`,
+        form.message && `Notes: ${form.message}`,
+      ].filter(Boolean);
+      const { error } = await supabase.from("estimate_requests").insert({
+        name: form.name,
+        phone: form.phone,
+        service: form.service || null,
+        details: detailParts.join(" | ") || null,
+      });
+      if (error) throw error;
       toast.success("Thanks! We'll call you back within 15 minutes.");
       setForm({ name: "", phone: "", service: "", windowCount: "", windowType: "", message: "" });
-    }, 800);
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong. Please call us directly.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputError = (field: string) =>
