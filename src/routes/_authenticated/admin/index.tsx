@@ -70,7 +70,7 @@ function EstimatesPage() {
               </div>
               {r.address && (
                 <a
-                  href={`geo:0,0?q=${encodeURIComponent(r.address)}`}
+                  href={`https://maps.apple.com/?q=${encodeURIComponent(r.address)}`}
                   className="mt-1 text-sm text-primary hover:underline"
                 >
                   {r.address}
