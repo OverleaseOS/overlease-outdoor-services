@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Phone, Sparkles, Clock, Award, Check, ChevronDown, Home, BadgeCheck, Frame, Droplets, Star, ArrowRight, Mail, Menu, X, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -116,15 +116,107 @@ function Hero() {
 const quoteSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be under 100 characters" }),
   phone: z.string().trim().min(1, { message: "Phone Number is required" }).max(20, { message: "Phone must be under 20 characters" }),
+  address: z.string().trim().min(1, { message: "Address is required" }).max(200, { message: "Address must be under 200 characters" }),
   service: z.string().trim().max(120, { message: "Service must be under 120 characters" }).optional(),
   windowCount: z.string().trim().max(10, { message: "Window count must be under 10 characters" }).optional(),
   windowType: z.string().trim().max(60, { message: "Window type must be under 60 characters" }).optional(),
   message: z.string().trim().max(500, { message: "Details must be under 500 characters" }).optional(),
 });
 
+function AddressAutocomplete({ value, onChange, error }: { value: string; onChange: (val: string) => void; error?: string }) {
+  const [query, setQuery] = useState(value);
+  const [suggestions, setSuggestions] = useState<Array<{ display_name: string }>>([]);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setQuery(value);
+  }, [value]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const fetchSuggestions = useCallback(async (q: string) => {
+    if (q.length < 3) {
+      setSuggestions([]);
+      setOpen(false);
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&limit=5`);
+      if (!res.ok) throw new Error("Failed");
+      const data = await res.json();
+      setSuggestions(data || []);
+      setOpen(true);
+    } catch {
+      setSuggestions([]);
+      setOpen(false);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setQuery(val);
+    onChange(val);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => fetchSuggestions(val), 400);
+  };
+
+  const handleSelect = (name: string) => {
+    setQuery(name);
+    onChange(name);
+    setOpen(false);
+    setSuggestions([]);
+  };
+
+  return (
+    <div ref={wrapperRef} className="relative">
+      <Input
+        id="address"
+        value={query}
+        onChange={handleInputChange}
+        placeholder="Start typing your address..."
+        className={`mt-1.5 ${error ? "border-destructive focus-visible:ring-destructive" : ""}`}
+        autoComplete="off"
+        aria-invalid={!!error}
+        aria-describedby={error ? "address-error" : undefined}
+      />
+      {loading && <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">Loading...</div>}
+      {open && suggestions.length > 0 && (
+        <div className="absolute z-10 mt-1 w-full rounded-xl border border-border bg-card shadow-[var(--shadow-card)] max-h-60 overflow-auto">
+          {suggestions.map((s, i) => (
+            <button
+              key={i}
+              type="button"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => handleSelect(s.display_name)}
+              className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition"
+            >
+              {s.display_name}
+            </button>
+          ))}
+        </div>
+      )}
+      {error && <p id="address-error" className="mt-1 text-xs text-destructive">{error}</p>}
+    </div>
+  );
+}
+
 function ContactForm() {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", service: "", windowCount: "", windowType: "", message: "" });
+  const [form, setForm] = useState({ name: "", phone: "", address: "", service: "", windowCount: "", windowType: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const submit = async (e: React.FormEvent) => {
@@ -149,7 +241,7 @@ function ContactForm() {
       });
       if (!res.ok) throw new Error("Request failed");
       toast.success("Thanks! We'll call you back within 15 minutes.");
-      setForm({ name: "", phone: "", service: "", windowCount: "", windowType: "", message: "" });
+      setForm({ name: "", phone: "", address: "", service: "", windowCount: "", windowType: "", message: "" });
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Please call us directly.");
@@ -201,6 +293,16 @@ function ContactForm() {
             aria-describedby={errors.phone ? "phone-error" : undefined}
           />
           {errors.phone && <p id="phone-error" className="mt-1 text-xs text-destructive">{errors.phone}</p>}
+        </div>
+        <div>
+          <Label htmlFor="address" className="flex items-center gap-1">
+            Address <span className="text-destructive" aria-hidden="true">*</span>
+          </Label>
+          <AddressAutocomplete
+            value={form.address}
+            onChange={(val) => setForm({ ...form, address: val })}
+            error={errors.address}
+          />
         </div>
         <div>
           <Label htmlFor="service">Service needed</Label>

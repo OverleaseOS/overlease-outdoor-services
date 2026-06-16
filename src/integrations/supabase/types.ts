@@ -103,6 +103,7 @@ export type Database = {
       }
       estimate_requests: {
         Row: {
+          address: string | null
           created_at: string
           details: string | null
           id: string
@@ -111,6 +112,7 @@ export type Database = {
           service: string | null
         }
         Insert: {
+          address?: string | null
           created_at?: string
           details?: string | null
           id?: string
@@ -119,6 +121,7 @@ export type Database = {
           service?: string | null
         }
         Update: {
+          address?: string | null
           created_at?: string
           details?: string | null
           id?: string
