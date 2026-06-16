@@ -68,6 +68,16 @@ function EstimatesPage() {
                   {new Date(r.created_at).toLocaleString('en-US', { timeZone: 'America/Chicago', dateStyle: 'medium', timeStyle: 'short' })}
                 </div>
               </div>
+              {r.address && (
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 text-sm text-primary hover:underline"
+                >
+                  {r.address}
+                </a>
+              )}
               {r.service && (
                 <div className="mt-2 text-sm"><span className="text-muted-foreground">Service: </span><span className="text-foreground">{r.service}</span></div>
               )}
