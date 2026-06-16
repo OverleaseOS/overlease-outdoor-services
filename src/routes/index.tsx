@@ -313,7 +313,7 @@ function ContactForm() {
         body: JSON.stringify(result.data),
       });
       if (!res.ok) throw new Error("Request failed");
-      toast.success("Thanks! We'll call you back within 15 minutes.");
+      toast.success("Thanks! We'll get back to you as soon as possible.");
       setForm({ name: "", phone: "", address: "", service: "", windowCount: "", windowType: "", message: "" });
     } catch (err) {
       console.error(err);
@@ -331,7 +331,7 @@ function ContactForm() {
     <div id="quote" className="scroll-mt-24 rounded-3xl bg-card/95 p-7 shadow-[var(--shadow-card)] backdrop-blur-xl ring-1 ring-foreground/10 md:p-8">
       <div className="mb-5">
         <h2 className="text-2xl font-bold tracking-tight text-foreground">Get a free quote</h2>
-        <p className="mt-1 text-sm text-muted-foreground">No commitment. We reply within 15 minutes.</p>
+        <p className="mt-1 text-sm text-muted-foreground">No commitment. We'll get back to you as soon as possible.</p>
       </div>
       <form onSubmit={submit} className="space-y-4" noValidate>
         <div>
