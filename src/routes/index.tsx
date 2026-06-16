@@ -193,7 +193,7 @@ function ContactForm() {
             type="tel"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            placeholder="Your number"
+            placeholder="Your Number"
             className={`mt-1.5 ${inputError("phone")}`}
             maxLength={20}
             aria-invalid={!!errors.phone}
