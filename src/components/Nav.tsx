@@ -73,7 +73,7 @@ export function Nav() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <a href="/" className="flex items-center text-foreground">
-          <img src={logoAsset.url} alt={`${BRAND} logo`} className="h-12 w-auto object-contain" />
+          <img src={logoAsset.url} alt={`${BRAND} logo`} className="h-14 w-auto object-contain" />
           <span className="ml-2 text-lg font-semibold">{BRAND}</span>
         </a>
 
