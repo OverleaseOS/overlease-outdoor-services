@@ -190,7 +190,7 @@ const quoteSchema = z.object({
 
 function ContactForm() {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", service: "", windowType: "", message: "" });
+  const [form, setForm] = useState({ name: "", phone: "", service: "", windowCount: "", windowType: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const submit = (e: React.FormEvent) => {
@@ -210,7 +210,7 @@ function ContactForm() {
     setTimeout(() => {
       setLoading(false);
       toast.success("Thanks! We'll call you back within 15 minutes.");
-      setForm({ name: "", phone: "", service: "", windowType: "", message: "" });
+      setForm({ name: "", phone: "", service: "", windowCount: "", windowType: "", message: "" });
     }, 800);
   };
 
