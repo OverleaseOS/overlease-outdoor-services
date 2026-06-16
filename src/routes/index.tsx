@@ -116,6 +116,7 @@ function Hero() {
 const quoteSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be under 100 characters" }),
   phone: z.string().trim().min(1, { message: "Phone Number is required" }).max(20, { message: "Phone must be under 20 characters" }),
+  address: z.string().trim().min(1, { message: "Address is required" }).max(200, { message: "Address must be under 200 characters" }),
   service: z.string().trim().max(120, { message: "Service must be under 120 characters" }).optional(),
   windowCount: z.string().trim().max(10, { message: "Window count must be under 10 characters" }).optional(),
   windowType: z.string().trim().max(60, { message: "Window type must be under 60 characters" }).optional(),
@@ -124,7 +125,7 @@ const quoteSchema = z.object({
 
 function ContactForm() {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", service: "", windowCount: "", windowType: "", message: "" });
+  const [form, setForm] = useState({ name: "", phone: "", address: "", service: "", windowCount: "", windowType: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const submit = async (e: React.FormEvent) => {
@@ -149,7 +150,7 @@ function ContactForm() {
       });
       if (!res.ok) throw new Error("Request failed");
       toast.success("Thanks! We'll call you back within 15 minutes.");
-      setForm({ name: "", phone: "", service: "", windowCount: "", windowType: "", message: "" });
+      setForm({ name: "", phone: "", address: "", service: "", windowCount: "", windowType: "", message: "" });
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Please call us directly.");
