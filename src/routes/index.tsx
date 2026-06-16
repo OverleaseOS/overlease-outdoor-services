@@ -68,6 +68,7 @@ function Nav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <a href="#" className="flex items-center text-foreground">
           <img src={logoAsset.url} alt={`${BRAND} logo`} className="h-12 w-auto object-contain" />
+          <span className="ml-2 text-lg font-semibold">{BRAND}</span>
         </a>
 
         <nav className="hidden items-center gap-1 rounded-full bg-white/10 px-2 py-1.5 backdrop-blur-md ring-1 ring-white/20 lg:flex">
