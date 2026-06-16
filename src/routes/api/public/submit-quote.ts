@@ -82,7 +82,7 @@ export const Route = createFileRoute('/api/public/submit-quote')({
             queue_name: 'transactional_emails',
             payload: {
               to: template.to || 'info@overleaseoutdoorservices.com',
-              from: 'Overlease Outdoor Services',
+              from: 'Overlease Outdoor Services <notifications@notify.overleaseoutdoorservices.com>',
               sender_domain: 'notify.overleaseoutdoorservices.com',
               subject,
               html,
