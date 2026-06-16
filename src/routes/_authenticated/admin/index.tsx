@@ -57,7 +57,23 @@ function EstimatesPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {rows.map((r) => (
+          {rows.map((r) => {
+            const parts = r.name.trim().split(/\s+/)
+            const firstName = parts[0] ?? ''
+            const lastName = parts.slice(1).join(' ')
+            const vcard = [
+              'BEGIN:VCARD',
+              'VERSION:3.0',
+              `N:${lastName};${firstName};;;`,
+              `FN:${r.name}`,
+              r.phone ? `TEL;TYPE=CELL:${r.phone}` : '',
+              r.address ? `ADR;TYPE=HOME:;;${r.address.replace(/,/g, '\\,')};;;;` : '',
+              'END:VCARD',
+            ].filter(Boolean).join('\n')
+            const vcardHref = `data:text/vcard;charset=utf-8,${encodeURIComponent(vcard)}`
+            const safeName = r.name.replace(/[^a-z0-9]+/gi, '_')
+
+            return (
             <div key={r.id} className="rounded-lg border border-border bg-card p-4 shadow-sm">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <div>
@@ -82,9 +98,20 @@ function EstimatesPage() {
               {r.details && (
                 <div className="mt-1 text-sm"><span className="text-muted-foreground">Details: </span><span className="text-foreground">{r.details}</span></div>
               )}
+              <div className="mt-3 pt-3 border-t border-border">
+                <a
+                  href={vcardHref}
+                  download={`${safeName}.vcf`}
+                  className="inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-1.5 text-xs font-medium text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground"
+                >
+                  Add to Contacts
+                </a>
+              </div>
             </div>
-          ))}
+            )
+          })}
         </div>
+
       )}
     </div>
   )
