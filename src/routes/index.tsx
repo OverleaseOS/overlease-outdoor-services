@@ -73,25 +73,38 @@ function useIsAdmin() {
   useEffect(() => {
     let active = true;
 
-    const check = async () => {
-      const { data: userData } = await supabase.auth.getUser();
+    const checkForUserId = async (userId: string | undefined) => {
+      if (!userId) {
+        if (active) setIsAdmin(false);
+        return;
+      }
+      const { data: roles, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId);
       if (!active) return;
-      if (!userData.user) {
+      if (error) {
+        console.error("[useIsAdmin] role fetch failed", error);
         setIsAdmin(false);
         return;
       }
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userData.user.id);
-      if (!active) return;
       setIsAdmin((roles ?? []).some((r) => r.role === "admin"));
     };
 
-    check();
-    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") {
-        check();
+    // Immediate check from cached session (synchronous read of localStorage)
+    supabase.auth.getSession().then(({ data }) => {
+      checkForUserId(data.session?.user?.id);
+    });
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (
+        event === "INITIAL_SESSION" ||
+        event === "SIGNED_IN" ||
+        event === "SIGNED_OUT" ||
+        event === "TOKEN_REFRESHED" ||
+        event === "USER_UPDATED"
+      ) {
+        checkForUserId(session?.user?.id);
       }
     });
 
