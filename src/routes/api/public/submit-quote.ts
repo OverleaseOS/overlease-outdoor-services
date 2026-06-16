@@ -1,5 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
+import React from 'react'
+import { render } from '@react-email/render'
+import { TEMPLATES } from '@/lib/email-templates/registry'
 
 const QuoteSchema = z.object({
   name: z.string().trim().min(1).max(100),
@@ -55,29 +58,44 @@ export const Route = createFileRoute('/api/public/submit-quote')({
             dateStyle: 'medium',
             timeStyle: 'short',
           })
+
+          const templateData = {
+            name: parsed.name,
+            phone: parsed.phone,
+            address: parsed.address,
+            service: parsed.service ?? undefined,
+            windowCount: parsed.windowCount ?? undefined,
+            windowType: parsed.windowType ?? undefined,
+            message: parsed.message ?? undefined,
+            submittedAt,
+          }
+
+          const template = TEMPLATES['quote-notification']
+          const subject = typeof template.subject === 'function'
+            ? template.subject(templateData)
+            : template.subject
+
+          const html = await render(React.createElement(template.component, templateData), { pretty: false })
+          const text = await render(React.createElement(template.component, templateData), { plainText: true })
+
           await supabaseAdmin.rpc('enqueue_email', {
             queue_name: 'transactional_emails',
             payload: {
-              templateName: 'quote-notification',
-              recipientEmail: 'info@overleaseoutdoorservices.com',
-              idempotencyKey: `quote-${inserted.id}`,
-              templateData: {
-                name: parsed.name,
-                phone: parsed.phone,
-                address: parsed.address,
-                service: parsed.service ?? undefined,
-                windowCount: parsed.windowCount ?? undefined,
-                windowType: parsed.windowType ?? undefined,
-                message: parsed.message ?? undefined,
-                submittedAt,
-              },
-
+              to: template.to || 'info@overleaseoutdoorservices.com',
+              from: 'Overlease Outdoor Services',
+              sender_domain: 'notify.overleaseoutdoorservices.com',
+              subject,
+              html,
+              text,
+              purpose: 'transactional',
+              label: 'quote-notification',
+              idempotency_key: `quote-${inserted.id}`,
+              message_id: `quote-${inserted.id}`,
             },
           })
         } catch (e) {
           console.error('enqueue_email failed', e)
         }
-
 
         return Response.json({ ok: true })
       },
