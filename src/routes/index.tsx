@@ -301,7 +301,7 @@ function Gallery() {
               </figure>
               <figure className="relative overflow-hidden rounded-2xl">
                 <img src={item.after} alt={`After cleaning — ${item.label}`} loading="lazy" width={800} height={800} className="aspect-square w-full object-cover" />
-                <figcaption className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[oklch(0.2_0.05_60)] backdrop-blur" style={{ background: "var(--gradient-sun)" }}>After</figcaption>
+                <figcaption className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground backdrop-blur" style={{ background: "var(--gradient-sun)" }}>After</figcaption>
               </figure>
             </div>
             <div className="px-2 pb-1 pt-4 text-sm font-medium text-muted-foreground">{item.label}</div>
