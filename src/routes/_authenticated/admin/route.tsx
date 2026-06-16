@@ -1,5 +1,6 @@
-import { createFileRoute, Outlet, Link, redirect, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect, useNavigate } from '@tanstack/react-router'
 import { supabase } from '@/integrations/supabase/client'
+import { Nav } from '@/components/Nav'
 
 export const Route = createFileRoute('/_authenticated/admin')({
   ssr: false,
@@ -29,24 +30,18 @@ function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-6">
-            <span className="font-semibold text-foreground">Admin</span>
-            <nav className="flex gap-4 text-sm">
-              <Link to="/admin" activeOptions={{ exact: true }} activeProps={{ className: 'text-primary font-medium' }} className="text-muted-foreground hover:text-foreground">
-                Estimate Requests
-              </Link>
-            </nav>
-          </div>
+      <Nav />
+      <div className="pt-24">
+        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+          <span className="font-semibold text-foreground">Admin</span>
           <button onClick={handleSignOut} className="text-sm text-muted-foreground hover:text-foreground">
             Sign out
           </button>
         </div>
-      </header>
-      <main className="mx-auto max-w-6xl px-4 py-8">
-        <Outlet />
-      </main>
+        <main className="mx-auto max-w-6xl px-4 pb-8">
+          <Outlet />
+        </main>
+      </div>
     </div>
   )
 }
