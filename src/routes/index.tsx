@@ -183,6 +183,7 @@ const quoteSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be under 100 characters" }),
   phone: z.string().trim().min(1, { message: "Phone number is required" }).max(20, { message: "Phone must be under 20 characters" }),
   service: z.string().trim().max(120, { message: "Service must be under 120 characters" }).optional(),
+  windowType: z.string().trim().max(60, { message: "Window type must be under 60 characters" }).optional(),
   message: z.string().trim().max(500, { message: "Details must be under 500 characters" }).optional(),
 });
 
