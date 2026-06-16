@@ -87,20 +87,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico" },
     ],
-    scripts: [
-      { src: "https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js", defer: true },
-      {
-        type: "text/javascript",
-        children: `window.OneSignalDeferred = window.OneSignalDeferred || [];
-OneSignalDeferred.push(function(OneSignal) {
-  OneSignal.init({
-    appId: "9c168275-dc83-4d1a-aac3-506b91443c30",
-    allowLocalhostAsSecureOrigin: true,
-    notifyButton: { enable: false },
-  });
-});`,
-      },
-    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
