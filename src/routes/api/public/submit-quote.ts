@@ -4,6 +4,7 @@ import { z } from 'zod'
 const QuoteSchema = z.object({
   name: z.string().trim().min(1).max(100),
   phone: z.string().trim().min(1).max(20),
+  address: z.string().trim().min(1).max(200),
   service: z.string().trim().max(120).optional().nullable(),
   windowCount: z.string().trim().max(10).optional().nullable(),
   windowType: z.string().trim().max(60).optional().nullable(),
@@ -35,6 +36,7 @@ export const Route = createFileRoute('/api/public/submit-quote')({
           .insert({
             name: parsed.name,
             phone: parsed.phone,
+            address: parsed.address || null,
             service: parsed.service || null,
             details: detailParts.join(' | ') || null,
           })
