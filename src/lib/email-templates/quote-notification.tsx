@@ -15,6 +15,7 @@ import type { TemplateEntry } from './registry'
 interface Props {
   name?: string
   phone?: string
+  address?: string
   service?: string
   windowCount?: string
   windowType?: string
@@ -22,15 +23,18 @@ interface Props {
   submittedAt?: string
 }
 
+
 const QuoteNotification = ({
   name = 'New customer',
   phone = '—',
+  address,
   service,
   windowCount,
   windowType,
   message,
   submittedAt,
 }: Props) => (
+
   <Html lang="en" dir="ltr">
     <Head />
     <Preview>New quote request from {name} ({phone})</Preview>
@@ -44,10 +48,12 @@ const QuoteNotification = ({
         <Section style={card}>
           <Row label="Name" value={name} />
           <Row label="Phone" value={phone} />
+          {address ? <Row label="Address" value={address} /> : null}
           {service ? <Row label="Service" value={service} /> : null}
           {windowCount ? <Row label="Windows" value={windowCount} /> : null}
           {windowType ? <Row label="Window type" value={windowType} /> : null}
         </Section>
+
 
         {message ? (
           <Section style={card}>
@@ -81,12 +87,14 @@ export const template = {
   previewData: {
     name: 'Jane Doe',
     phone: '(555) 123-4567',
+    address: '123 Main St, Kansas City, MO',
     service: 'Window cleaning',
     windowCount: '12',
     windowType: 'Double-hung',
     message: 'Two-story home, back patio access.',
     submittedAt: new Date().toLocaleString(),
   },
+
 } satisfies TemplateEntry
 
 const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif', margin: 0, padding: 0 }

@@ -64,12 +64,14 @@ export const Route = createFileRoute('/api/public/submit-quote')({
               templateData: {
                 name: parsed.name,
                 phone: parsed.phone,
+                address: parsed.address,
                 service: parsed.service ?? undefined,
                 windowCount: parsed.windowCount ?? undefined,
                 windowType: parsed.windowType ?? undefined,
                 message: parsed.message ?? undefined,
                 submittedAt,
               },
+
             },
           })
         } catch (e) {
