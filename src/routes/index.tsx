@@ -13,6 +13,10 @@ import windowBefore from "@/assets/window-before.jpg.asset.json";
 import windowAfter from "@/assets/window-after.jpg.asset.json";
 import windowBefore2 from "@/assets/window-before-2.jpg.asset.json";
 import windowAfter2 from "@/assets/window-after-2.jpg.asset.json";
+import windowBefore3 from "@/assets/window-before-3.jpg.asset.json";
+import windowAfter3 from "@/assets/window-after-3.jpg.asset.json";
+import windowBefore4 from "@/assets/window-before-4.jpg.asset.json";
+import windowAfter4 from "@/assets/window-after-4.jpg.asset.json";
 import logo from "@/assets/logo.png";
 
 
@@ -391,6 +395,8 @@ function WhyUs() {
 const beforeAfter = [
   { before: windowBefore.url, after: windowAfter.url, label: "Real customer window — before and after cleaning" },
   { before: windowBefore2.url, after: windowAfter2.url, label: "Real window frame and glass — before and after cleaning" },
+  { before: windowBefore3.url, after: windowAfter3.url, label: "Sliding patio door — before and after cleaning" },
+  { before: windowBefore4.url, after: windowAfter4.url, label: "Streaky exterior window — before and after cleaning" },
 ];
 
 function Gallery() {
