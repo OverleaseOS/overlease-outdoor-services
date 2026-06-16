@@ -261,6 +261,25 @@ function ContactForm() {
           <Input id="service" value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })} placeholder="e.g. Residential, 12 windows" className="mt-1.5" maxLength={120} />
         </div>
         <div>
+          <Label htmlFor="windowType">Window type</Label>
+          <Select
+            value={form.windowType}
+            onValueChange={(value) => setForm({ ...form, windowType: value })}
+          >
+            <SelectTrigger id="windowType" className="mt-1.5 w-full">
+              <SelectValue placeholder="Select window type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="single-pane">Single Pane</SelectItem>
+              <SelectItem value="french">French Windows</SelectItem>
+              <SelectItem value="double-pane">Double Pane</SelectItem>
+              <SelectItem value="bay">Bay / Bow</SelectItem>
+              <SelectItem value="sliding">Sliding</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
           <Label htmlFor="message">Details <span className="text-muted-foreground">(optional)</span></Label>
           <Textarea id="message" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Frames, sills, screens..." className="mt-1.5 min-h-[80px]" maxLength={500} />
         </div>
