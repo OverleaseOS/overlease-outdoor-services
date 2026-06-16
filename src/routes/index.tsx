@@ -480,7 +480,7 @@ function Testimonials() {
         <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">What customers say</h2>
         <p className="mt-4 text-lg text-muted-foreground">Real feedback from real Kansas homeowners.</p>
       </div>
-      <div className="mt-14 grid gap-6 md:grid-cols-3">
+      <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {testimonials.map((t, i) => (
           <div key={i} className="rounded-3xl border border-border bg-card p-7 shadow-[var(--shadow-card)]">
             <div className="flex gap-0.5">
