@@ -98,7 +98,7 @@ function Hero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
               href={`tel:${PHONE}`}
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-base font-semibold text-[oklch(0.2_0.05_60)] shadow-[var(--shadow-glow)] transition hover:scale-[1.03]"
+              className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-base font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:scale-[1.03]"
               style={{ background: "var(--gradient-sun)" }}
             >
               <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
