@@ -12,6 +12,7 @@ import before1 from "@/assets/before-1.jpg";
 import after1 from "@/assets/after-1.jpg";
 import before2 from "@/assets/before-2.jpg";
 import after2 from "@/assets/after-2.jpg";
+import logo from "@/assets/logo.png";
 
 
 const PHONE = "9134247527";
@@ -52,9 +53,7 @@ function Nav() {
     <header className="absolute top-0 left-0 right-0 z-50">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <a href="#" className="flex items-center gap-2 text-foreground">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 backdrop-blur-md ring-1 ring-white/25">
-            <Sparkles className="h-5 w-5" />
-          </div>
+          <img src={logo} alt={`${BRAND} logo`} className="h-9 w-9 rounded-lg object-contain" />
           <span className="text-lg font-semibold tracking-tight">{BRAND}</span>
         </a>
         <a
