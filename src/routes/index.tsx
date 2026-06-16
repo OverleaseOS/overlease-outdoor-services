@@ -395,6 +395,8 @@ function WhyUs() {
 const beforeAfter = [
   { before: windowBefore.url, after: windowAfter.url, label: "Real customer window — before and after cleaning" },
   { before: windowBefore2.url, after: windowAfter2.url, label: "Real window frame and glass — before and after cleaning" },
+  { before: windowBefore3.url, after: windowAfter3.url, label: "Sliding patio door — before and after cleaning" },
+  { before: windowBefore4.url, after: windowAfter4.url, label: "Streaky exterior window — before and after cleaning" },
 ];
 
 function Gallery() {
