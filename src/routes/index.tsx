@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Phone, Sparkles, Clock, Award, Check, ChevronDown, Home, BadgeCheck, Frame, Droplets, Star, ArrowRight, Mail } from "lucide-react";
+import { Phone, Sparkles, Clock, Award, Check, ChevronDown, Home, BadgeCheck, Frame, Droplets, Star, ArrowRight, Mail, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,7 +48,16 @@ function Index() {
   );
 }
 
+const navLinks = [
+  { href: "#services", label: "Services" },
+  { href: "#why", label: "Why Us" },
+  { href: "#gallery", label: "Gallery" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#quote", label: "Contact" },
+];
+
 function Nav() {
+  const [open, setOpen] = useState(false);
   return (
     <header className="absolute top-0 left-0 right-0 z-50">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
@@ -56,14 +65,63 @@ function Nav() {
           <img src={logo} alt={`${BRAND} logo`} className="h-9 w-9 rounded-lg object-contain" />
           <span className="text-lg font-semibold tracking-tight">{BRAND}</span>
         </a>
-        <a
-          href={`tel:${PHONE}`}
-          className="hidden items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-foreground backdrop-blur-md ring-1 ring-white/25 transition hover:bg-white/20 md:inline-flex"
-        >
-          <Phone className="h-4 w-4" />
-          {PHONE_DISPLAY}
-        </a>
+
+        <nav className="hidden items-center gap-1 rounded-full bg-white/10 px-2 py-1.5 backdrop-blur-md ring-1 ring-white/20 lg:flex">
+          {navLinks.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="rounded-full px-3 py-1.5 text-sm font-medium text-foreground/90 transition hover:bg-white/15 hover:text-foreground"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <a
+            href={`tel:${PHONE}`}
+            className="hidden items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-foreground backdrop-blur-md ring-1 ring-white/25 transition hover:bg-white/20 md:inline-flex"
+          >
+            <Phone className="h-4 w-4" />
+            {PHONE_DISPLAY}
+          </a>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-foreground backdrop-blur-md ring-1 ring-white/25 transition hover:bg-white/20 lg:hidden"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
+
+      {open && (
+        <div className="mx-4 rounded-2xl bg-card/95 p-3 shadow-[var(--shadow-card)] ring-1 ring-foreground/10 backdrop-blur-xl lg:hidden">
+          <nav className="flex flex-col">
+            {navLinks.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="rounded-xl px-4 py-3 text-base font-medium text-foreground transition hover:bg-foreground/5"
+              >
+                {l.label}
+              </a>
+            ))}
+            <a
+              href={`tel:${PHONE}`}
+              onClick={() => setOpen(false)}
+              className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-semibold text-primary-foreground"
+              style={{ background: "var(--gradient-primary)" }}
+            >
+              <Phone className="h-4 w-4" /> Call {PHONE_DISPLAY}
+            </a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
@@ -157,7 +215,7 @@ function ContactForm() {
     errors[field] ? "border-destructive focus-visible:ring-destructive" : "";
 
   return (
-    <div className="rounded-3xl bg-card/95 p-7 shadow-[var(--shadow-card)] backdrop-blur-xl ring-1 ring-foreground/10 md:p-8">
+    <div id="quote" className="scroll-mt-24 rounded-3xl bg-card/95 p-7 shadow-[var(--shadow-card)] backdrop-blur-xl ring-1 ring-foreground/10 md:p-8">
       <div className="mb-5">
         <h2 className="text-2xl font-bold tracking-tight text-foreground">Get a free quote</h2>
         <p className="mt-1 text-sm text-muted-foreground">No commitment. We reply within 15 minutes.</p>
@@ -256,7 +314,7 @@ const whyUs = [
 
 function WhyUs() {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32" style={{ background: "var(--gradient-hero)" }}>
+    <section id="why" className="relative overflow-hidden py-24 md:py-32 scroll-mt-24" style={{ background: "var(--gradient-hero)" }}>
       <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, oklch(0.55 0.18 250 / 0.4), transparent 50%), radial-gradient(circle at 80% 70%, oklch(0.60 0.15 250 / 0.4), transparent 50%)" }} />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center text-foreground">
