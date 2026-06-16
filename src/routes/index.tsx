@@ -9,10 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { z } from "zod";
-import before1 from "@/assets/before-1.jpg";
-import after1 from "@/assets/after-1.jpg";
-import before2 from "@/assets/before-2.jpg";
-import after2 from "@/assets/after-2.jpg";
+import windowBefore from "@/assets/window-before.jpg.asset.json";
+import windowAfter from "@/assets/window-after.jpg.asset.json";
+import windowBefore2 from "@/assets/window-before-2.jpg.asset.json";
+import windowAfter2 from "@/assets/window-after-2.jpg.asset.json";
 import logo from "@/assets/logo.png";
 
 
@@ -389,8 +389,8 @@ function WhyUs() {
 }
 
 const beforeAfter = [
-  { before: before1, after: after1, label: "Front bay window — Wichita, KS" },
-  { before: before2, after: after2, label: "Side sliding window — Overland Park, KS" },
+  { before: windowBefore.url, after: windowAfter.url, label: "Real customer window — before and after cleaning" },
+  { before: windowBefore2.url, after: windowAfter2.url, label: "Real window frame and glass — before and after cleaning" },
 ];
 
 function Gallery() {
