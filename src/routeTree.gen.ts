@@ -18,7 +18,6 @@ import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicSubmitQuoteRouteImport } from './routes/api/public/submit-quote'
-import { Route as AuthenticatedAdminNotifySetupRouteImport } from './routes/_authenticated/admin/notify-setup'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -67,12 +66,6 @@ const ApiPublicSubmitQuoteRoute = ApiPublicSubmitQuoteRouteImport.update({
   path: '/api/public/submit-quote',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAdminNotifySetupRoute =
-  AuthenticatedAdminNotifySetupRouteImport.update({
-    id: '/notify-setup',
-    path: '/notify-setup',
-    getParentRoute: () => AuthenticatedAdminRouteRoute,
-  } as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -98,7 +91,6 @@ export interface FileRoutesByFullPath {
   '/unsubscribe': typeof UnsubscribeRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/admin/notify-setup': typeof AuthenticatedAdminNotifySetupRoute
   '/api/public/submit-quote': typeof ApiPublicSubmitQuoteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -111,7 +103,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/admin/notify-setup': typeof AuthenticatedAdminNotifySetupRoute
   '/api/public/submit-quote': typeof ApiPublicSubmitQuoteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -127,7 +118,6 @@ export interface FileRoutesById {
   '/unsubscribe': typeof UnsubscribeRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/_authenticated/admin/notify-setup': typeof AuthenticatedAdminNotifySetupRoute
   '/api/public/submit-quote': typeof ApiPublicSubmitQuoteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -143,7 +133,6 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/admin'
     | '/email/unsubscribe'
-    | '/admin/notify-setup'
     | '/api/public/submit-quote'
     | '/lovable/email/suppression'
     | '/admin/'
@@ -156,7 +145,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/unsubscribe'
     | '/email/unsubscribe'
-    | '/admin/notify-setup'
     | '/api/public/submit-quote'
     | '/lovable/email/suppression'
     | '/admin'
@@ -171,7 +159,6 @@ export interface FileRouteTypes {
     | '/unsubscribe'
     | '/_authenticated/admin'
     | '/email/unsubscribe'
-    | '/_authenticated/admin/notify-setup'
     | '/api/public/submit-quote'
     | '/lovable/email/suppression'
     | '/_authenticated/admin/'
@@ -258,13 +245,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicSubmitQuoteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin/notify-setup': {
-      id: '/_authenticated/admin/notify-setup'
-      path: '/notify-setup'
-      fullPath: '/admin/notify-setup'
-      preLoaderRoute: typeof AuthenticatedAdminNotifySetupRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -290,13 +270,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
-  AuthenticatedAdminNotifySetupRoute: typeof AuthenticatedAdminNotifySetupRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
-    AuthenticatedAdminNotifySetupRoute: AuthenticatedAdminNotifySetupRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   }
 

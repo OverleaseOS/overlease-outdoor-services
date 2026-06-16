@@ -74,53 +74,6 @@ export const Route = createFileRoute('/api/public/submit-quote')({
           console.error('enqueue_email failed', e)
         }
 
-        // Send OneSignal push notification with submission details.
-        try {
-          const appId = process.env.ONESIGNAL_APP_ID
-          const apiKey = process.env.ONESIGNAL_REST_API_KEY
-          if (appId && apiKey) {
-            const lines = [
-              `Name: ${parsed.name}`,
-              `Phone: ${parsed.phone}`,
-              parsed.service && `Service: ${parsed.service}`,
-              parsed.windowCount && `Windows: ${parsed.windowCount}`,
-              parsed.windowType && `Type: ${parsed.windowType}`,
-              parsed.message && `Notes: ${parsed.message}`,
-            ].filter(Boolean) as string[]
-
-            // Look up all registered admin devices
-            const { data: subs } = await supabaseAdmin
-              .from('admin_push_subscriptions')
-              .select('player_id')
-            const playerIds = (subs ?? []).map((s) => s.player_id).filter(Boolean)
-
-            if (playerIds.length === 0) {
-              console.warn('No admin push subscriptions registered; skipping push')
-            } else {
-              const res = await fetch('https://api.onesignal.com/notifications', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Key ${apiKey}`,
-                },
-                body: JSON.stringify({
-                  app_id: appId,
-                  include_player_ids: playerIds,
-                  headings: { en: `New estimate request from ${parsed.name}` },
-                  contents: { en: lines.join('\n') },
-                  data: { estimateId: inserted.id, ...parsed },
-                }),
-              })
-              if (!res.ok) {
-                console.error('OneSignal notify failed', res.status, await res.text())
-              }
-            }
-          } else {
-            console.warn('OneSignal env vars missing; skipping push')
-          }
-        } catch (e) {
-          console.error('OneSignal notify error', e)
-        }
 
         return Response.json({ ok: true })
       },
