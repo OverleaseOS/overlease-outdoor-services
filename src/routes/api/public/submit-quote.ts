@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
+import React from 'react'
 import { render } from '@react-email/render'
 import { TEMPLATES } from '@/lib/email-templates/registry'
 
