@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Phone, Sparkles, Shield, Clock, Award, Check, ChevronDown, Home, BadgeCheck, Frame, Droplets, Star, ArrowRight } from "lucide-react";
+import { Phone, Sparkles, Clock, Award, Check, ChevronDown, Home, BadgeCheck, Frame, Droplets, Star, ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,17 +13,18 @@ import before2 from "@/assets/before-2.jpg";
 import after2 from "@/assets/after-2.jpg";
 
 
-const PHONE = "9133020530";
-const PHONE_DISPLAY = "913 302 0530";
+const PHONE = "9134247527";
+const PHONE_DISPLAY = "913 424 7527";
+const EMAIL = "info@overleaseoutdoorservices.com";
+const BRAND = "Overlease Outdoor Services";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Burns Clear — Kansas Window Cleaning. Frames, Sills & Glass." },
-      { name: "description", content: "Professional residential window cleaning across the Kansas area. Streak-free glass, spotless frames and sills. Call 913 302 0530." },
-      { property: "og:title", content: "Burns Clear — Kansas Window Cleaning" },
+      { title: "Overlease Outdoor Services — Kansas Window Cleaning" },
+      { name: "description", content: "Professional residential window cleaning across the Kansas area. Streak-free glass, spotless frames and sills. Call 913 424 7527." },
+      { property: "og:title", content: "Overlease Outdoor Services — Kansas Window Cleaning" },
       { property: "og:description", content: "Residential window cleaning across Kansas. Licensed, insured, streak-free." },
-
     ],
   }),
   component: Index,
@@ -53,7 +54,7 @@ function Nav() {
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 backdrop-blur-md ring-1 ring-white/25">
             <Sparkles className="h-5 w-5" />
           </div>
-          <span className="text-lg font-semibold tracking-tight">Burns Clear</span>
+          <span className="text-lg font-semibold tracking-tight">{BRAND}</span>
         </a>
         <a
           href={`tel:${PHONE}`}
@@ -82,7 +83,7 @@ function Hero() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-36 md:pt-44 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pb-32">
         <div className="text-foreground">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider ring-1 ring-white/20 backdrop-blur-md">
-            <BadgeCheck className="h-3.5 w-3.5" /> Licensed & Insured · Serving Kansas · Licensed Trusted by 2,000+ homes Insured
+            <BadgeCheck className="h-3.5 w-3.5" /> Licensed & Insured · Serving Kansas · Trusted by 2,000+ homes
           </span>
 
           <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
@@ -216,7 +217,7 @@ function WhyUs() {
       <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, oklch(0.85 0.16 90 / 0.4), transparent 50%), radial-gradient(circle at 80% 70%, oklch(0.78 0.14 220 / 0.4), transparent 50%)" }} />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center text-foreground">
-          <span className="text-sm font-semibold uppercase tracking-wider text-primary">Why Burns Clear</span>
+          <span className="text-sm font-semibold uppercase tracking-wider text-primary">Why {BRAND}</span>
           <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">The difference is clear.</h2>
           <p className="mt-4 text-lg text-foreground">We're obsessive about detail. You'll see — literally.</p>
         </div>
@@ -314,9 +315,12 @@ function FinalCTA() {
           <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-[oklch(0.2_0.05_60)] shadow-[var(--shadow-glow)] transition hover:scale-[1.03]" style={{ background: "var(--gradient-sun)" }}>
             <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
           </a>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Check className="h-4 w-4" /> Free quote · No obligation
-          </div>
+          <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-2 rounded-full bg-white/10 px-6 py-4 text-base font-semibold text-foreground ring-1 ring-white/25 backdrop-blur-md transition hover:bg-white/20">
+            <Mail className="h-5 w-5" /> {EMAIL}
+          </a>
+        </div>
+        <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+          <Check className="h-4 w-4" /> Free quote · No obligation
         </div>
       </div>
     </section>
@@ -328,10 +332,13 @@ function Footer() {
     <footer className="border-t border-border bg-card">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted-foreground md:flex-row">
         <div className="flex items-center gap-2 font-semibold text-foreground">
-          <Sparkles className="h-4 w-4 text-primary" /> Burns Clear Window Cleaning · Kansas
+          <Sparkles className="h-4 w-4 text-primary" /> {BRAND} · Kansas
         </div>
-        <a href={`tel:${PHONE}`} className="hover:text-primary">{PHONE_DISPLAY}</a>
-        <div>© {new Date().getFullYear()} Burns Clear. All rights reserved.</div>
+        <div className="flex flex-col items-center gap-1 md:flex-row md:gap-4">
+          <a href={`tel:${PHONE}`} className="hover:text-primary">{PHONE_DISPLAY}</a>
+          <a href={`mailto:${EMAIL}`} className="hover:text-primary">{EMAIL}</a>
+        </div>
+        <div>© {new Date().getFullYear()} {BRAND}. All rights reserved.</div>
       </div>
     </footer>
   );
