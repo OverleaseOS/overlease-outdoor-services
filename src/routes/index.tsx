@@ -215,7 +215,7 @@ function ContactForm() {
     errors[field] ? "border-destructive focus-visible:ring-destructive" : "";
 
   return (
-    <div className="rounded-3xl bg-card/95 p-7 shadow-[var(--shadow-card)] backdrop-blur-xl ring-1 ring-foreground/10 md:p-8">
+    <div id="quote" className="scroll-mt-24 rounded-3xl bg-card/95 p-7 shadow-[var(--shadow-card)] backdrop-blur-xl ring-1 ring-foreground/10 md:p-8">
       <div className="mb-5">
         <h2 className="text-2xl font-bold tracking-tight text-foreground">Get a free quote</h2>
         <p className="mt-1 text-sm text-muted-foreground">No commitment. We reply within 15 minutes.</p>
