@@ -88,7 +88,7 @@ function Hero() {
 
           <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
             Outdoor services,<br />
-            <span className="bg-gradient-to-r from-[oklch(0.92_0.16_90)] to-[oklch(0.85_0.18_60)] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[oklch(0.65_0.15_250)] to-[oklch(0.55_0.18_250)] bg-clip-text text-transparent">
               done right.
             </span>
           </h1>
@@ -98,7 +98,7 @@ function Hero() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
               href={`tel:${PHONE}`}
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-base font-semibold text-[oklch(0.2_0.05_60)] shadow-[var(--shadow-glow)] transition hover:scale-[1.03]"
+              className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-base font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:scale-[1.03]"
               style={{ background: "var(--gradient-sun)" }}
             >
               <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
@@ -106,7 +106,7 @@ function Hero() {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-[oklch(0.85_0.16_90)] text-primary" />
+                  <Star key={i} className="h-4 w-4 fill-primary text-primary" />
                 ))}
               </div>
               4.9 / 5 from 480+ reviews
@@ -157,7 +157,7 @@ function ContactForm() {
     errors[field] ? "border-destructive focus-visible:ring-destructive" : "";
 
   return (
-    <div className="rounded-3xl bg-white/95 p-7 shadow-[var(--shadow-card)] backdrop-blur-xl ring-1 ring-white/40 md:p-8">
+    <div className="rounded-3xl bg-card/95 p-7 shadow-[var(--shadow-card)] backdrop-blur-xl ring-1 ring-foreground/10 md:p-8">
       <div className="mb-5">
         <h2 className="text-2xl font-bold tracking-tight text-foreground">Get a free quote</h2>
         <p className="mt-1 text-sm text-muted-foreground">No commitment. We reply within 15 minutes.</p>
@@ -257,7 +257,7 @@ const whyUs = [
 function WhyUs() {
   return (
     <section className="relative overflow-hidden py-24 md:py-32" style={{ background: "var(--gradient-hero)" }}>
-      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, oklch(0.85 0.16 90 / 0.4), transparent 50%), radial-gradient(circle at 80% 70%, oklch(0.78 0.14 220 / 0.4), transparent 50%)" }} />
+      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, oklch(0.55 0.18 250 / 0.4), transparent 50%), radial-gradient(circle at 80% 70%, oklch(0.60 0.15 250 / 0.4), transparent 50%)" }} />
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center text-foreground">
           <span className="text-sm font-semibold uppercase tracking-wider text-primary">Why {BRAND}</span>
@@ -301,7 +301,7 @@ function Gallery() {
               </figure>
               <figure className="relative overflow-hidden rounded-2xl">
                 <img src={item.after} alt={`After cleaning — ${item.label}`} loading="lazy" width={800} height={800} className="aspect-square w-full object-cover" />
-                <figcaption className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[oklch(0.2_0.05_60)] backdrop-blur" style={{ background: "var(--gradient-sun)" }}>After</figcaption>
+                <figcaption className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground backdrop-blur" style={{ background: "var(--gradient-sun)" }}>After</figcaption>
               </figure>
             </div>
             <div className="px-2 pb-1 pt-4 text-sm font-medium text-muted-foreground">{item.label}</div>
@@ -350,15 +350,15 @@ function FinalCTA() {
   return (
     <section className="relative overflow-hidden py-24 md:py-32">
       <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
-      <div className="absolute inset-0 -z-10 opacity-40" style={{ backgroundImage: "radial-gradient(circle at 70% 30%, oklch(0.85 0.16 90 / 0.5), transparent 50%)" }} />
+      <div className="absolute inset-0 -z-10 opacity-40" style={{ backgroundImage: "radial-gradient(circle at 70% 30%, oklch(0.55 0.18 250 / 0.5), transparent 50%)" }} />
       <div className="mx-auto max-w-4xl px-6 text-center text-foreground">
-        <h2 className="text-4xl font-bold tracking-tight md:text-6xl">Ready for windows that <span className="bg-gradient-to-r from-[oklch(0.92_0.16_90)] to-[oklch(0.85_0.18_60)] bg-clip-text text-transparent">disappear</span>?</h2>
+        <h2 className="text-4xl font-bold tracking-tight md:text-6xl">Ready for windows that <span className="bg-gradient-to-r from-[oklch(0.65_0.15_250)] to-[oklch(0.55_0.18_250)] bg-clip-text text-transparent">disappear</span>?</h2>
         <p className="mx-auto mt-5 max-w-xl text-lg text-foreground">One call. One spotless result. Book your clean today and see the difference.</p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-[oklch(0.2_0.05_60)] shadow-[var(--shadow-glow)] transition hover:scale-[1.03]" style={{ background: "var(--gradient-sun)" }}>
+          <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:scale-[1.03]" style={{ background: "var(--gradient-sun)" }}>
             <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
           </a>
-          <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-2 rounded-full bg-white/10 px-6 py-4 text-base font-semibold text-foreground ring-1 ring-white/25 backdrop-blur-md transition hover:bg-white/20">
+          <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-2 rounded-full bg-foreground/10 px-6 py-4 text-base font-semibold text-foreground ring-1 ring-foreground/20 backdrop-blur-md transition hover:bg-foreground/20">
             <Mail className="h-5 w-5" /> {EMAIL}
           </a>
         </div>
