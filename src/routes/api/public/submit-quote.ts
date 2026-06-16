@@ -88,6 +88,8 @@ export const Route = createFileRoute('/api/public/submit-quote')({
               parsed.message && `Notes: ${parsed.message}`,
             ].filter(Boolean) as string[]
 
+            const ownerPlayerId = process.env.ONESIGNAL_OWNER_PLAYER_ID
+
             const res = await fetch('https://api.onesignal.com/notifications', {
               method: 'POST',
               headers: {
@@ -96,7 +98,8 @@ export const Route = createFileRoute('/api/public/submit-quote')({
               },
               body: JSON.stringify({
                 app_id: appId,
-                included_segments: ['Total Subscriptions'],
+                include_player_ids: ownerPlayerId ? [ownerPlayerId] : undefined,
+                included_segments: ownerPlayerId ? undefined : ['Total Subscriptions'],
                 headings: { en: `New estimate request from ${parsed.name}` },
                 contents: { en: lines.join('\n') },
                 data: {
