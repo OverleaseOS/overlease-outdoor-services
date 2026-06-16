@@ -350,15 +350,15 @@ function FinalCTA() {
   return (
     <section className="relative overflow-hidden py-24 md:py-32">
       <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
-      <div className="absolute inset-0 -z-10 opacity-40" style={{ backgroundImage: "radial-gradient(circle at 70% 30%, oklch(0.85 0.16 90 / 0.5), transparent 50%)" }} />
+      <div className="absolute inset-0 -z-10 opacity-40" style={{ backgroundImage: "radial-gradient(circle at 70% 30%, oklch(0.55 0.18 250 / 0.5), transparent 50%)" }} />
       <div className="mx-auto max-w-4xl px-6 text-center text-foreground">
-        <h2 className="text-4xl font-bold tracking-tight md:text-6xl">Ready for windows that <span className="bg-gradient-to-r from-[oklch(0.92_0.16_90)] to-[oklch(0.85_0.18_60)] bg-clip-text text-transparent">disappear</span>?</h2>
+        <h2 className="text-4xl font-bold tracking-tight md:text-6xl">Ready for windows that <span className="bg-gradient-to-r from-[oklch(0.65_0.15_250)] to-[oklch(0.55_0.18_250)] bg-clip-text text-transparent">disappear</span>?</h2>
         <p className="mx-auto mt-5 max-w-xl text-lg text-foreground">One call. One spotless result. Book your clean today and see the difference.</p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-[oklch(0.2_0.05_60)] shadow-[var(--shadow-glow)] transition hover:scale-[1.03]" style={{ background: "var(--gradient-sun)" }}>
+          <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-lg font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:scale-[1.03]" style={{ background: "var(--gradient-sun)" }}>
             <Phone className="h-5 w-5" /> Call {PHONE_DISPLAY}
           </a>
-          <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-2 rounded-full bg-white/10 px-6 py-4 text-base font-semibold text-foreground ring-1 ring-white/25 backdrop-blur-md transition hover:bg-white/20">
+          <a href={`mailto:${EMAIL}`} className="inline-flex items-center gap-2 rounded-full bg-foreground/10 px-6 py-4 text-base font-semibold text-foreground ring-1 ring-foreground/20 backdrop-blur-md transition hover:bg-foreground/20">
             <Mail className="h-5 w-5" /> {EMAIL}
           </a>
         </div>
