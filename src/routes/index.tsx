@@ -46,6 +46,7 @@ function Index() {
       <Services />
       <WhyUs />
       <Gallery />
+      <Testimonials />
       <FAQ />
       <FinalCTA />
       <Footer />
