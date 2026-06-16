@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as AdminNotifySetupRouteImport } from './routes/admin.notify-setup'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicSubmitQuoteRouteImport } from './routes/api/public/submit-quote'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -31,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   id: '/email/unsubscribe',
   path: '/email/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNotifySetupRoute = AdminNotifySetupRouteImport.update({
+  id: '/admin/notify-setup',
+  path: '/admin/notify-setup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
@@ -65,6 +71,7 @@ const LovableEmailQueueProcessRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/admin/notify-setup': typeof AdminNotifySetupRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/api/public/submit-quote': typeof ApiPublicSubmitQuoteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/admin/notify-setup': typeof AdminNotifySetupRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/api/public/submit-quote': typeof ApiPublicSubmitQuoteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/admin/notify-setup': typeof AdminNotifySetupRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/api/public/submit-quote': typeof ApiPublicSubmitQuoteRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/unsubscribe'
+    | '/admin/notify-setup'
     | '/email/unsubscribe'
     | '/api/public/submit-quote'
     | '/lovable/email/suppression'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/unsubscribe'
+    | '/admin/notify-setup'
     | '/email/unsubscribe'
     | '/api/public/submit-quote'
     | '/lovable/email/suppression'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/unsubscribe'
+    | '/admin/notify-setup'
     | '/email/unsubscribe'
     | '/api/public/submit-quote'
     | '/lovable/email/suppression'
@@ -129,6 +141,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  AdminNotifySetupRoute: typeof AdminNotifySetupRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   ApiPublicSubmitQuoteRoute: typeof ApiPublicSubmitQuoteRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
@@ -158,6 +171,13 @@ declare module '@tanstack/react-router' {
       path: '/email/unsubscribe'
       fullPath: '/email/unsubscribe'
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/notify-setup': {
+      id: '/admin/notify-setup'
+      path: '/admin/notify-setup'
+      fullPath: '/admin/notify-setup'
+      preLoaderRoute: typeof AdminNotifySetupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/suppression': {
@@ -201,6 +221,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  AdminNotifySetupRoute: AdminNotifySetupRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   ApiPublicSubmitQuoteRoute: ApiPublicSubmitQuoteRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
