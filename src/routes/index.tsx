@@ -218,19 +218,12 @@ function ContactForm() {
     }
     setLoading(true);
     try {
-      const detailParts = [
-        form.service && `Service: ${form.service}`,
-        form.windowCount && `Windows: ${form.windowCount}`,
-        form.windowType && `Type: ${form.windowType}`,
-        form.message && `Notes: ${form.message}`,
-      ].filter(Boolean);
-      const { error } = await supabase.from("estimate_requests").insert({
-        name: form.name,
-        phone: form.phone,
-        service: form.service || null,
-        details: detailParts.join(" | ") || null,
+      const res = await fetch("/api/public/submit-quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(result.data),
       });
-      if (error) throw error;
+      if (!res.ok) throw new Error("Request failed");
       toast.success("Thanks! We'll call you back within 15 minutes.");
       setForm({ name: "", phone: "", service: "", windowCount: "", windowType: "", message: "" });
     } catch (err) {
@@ -240,6 +233,7 @@ function ContactForm() {
       setLoading(false);
     }
   };
+
 
   const inputError = (field: string) =>
     errors[field] ? "border-destructive focus-visible:ring-destructive" : "";
