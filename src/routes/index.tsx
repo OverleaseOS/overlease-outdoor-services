@@ -153,11 +153,15 @@ function AddressAutocomplete({ value, onChange, error }: { value: string; onChan
     }
     setLoading(true);
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&limit=5&countrycodes=us`);
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&addressdetails=1&limit=20&countrycodes=us`);
       if (!res.ok) throw new Error("Failed");
-      const data = await res.json();
-      setSuggestions(data || []);
-      setOpen(true);
+      const data: Array<{ display_name: string }> = await res.json();
+      const normalizedQuery = normalizeAddress(q);
+      const filtered = (data || []).filter((s) =>
+        normalizeAddress(s.display_name).startsWith(normalizedQuery)
+      ).slice(0, 5);
+      setSuggestions(filtered);
+      setOpen(filtered.length > 0);
     } catch {
       setSuggestions([]);
       setOpen(false);
