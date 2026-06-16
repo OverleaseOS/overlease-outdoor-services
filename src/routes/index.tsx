@@ -88,7 +88,7 @@ function Hero() {
 
           <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
             Outdoor services,<br />
-            <span className="bg-gradient-to-r from-[oklch(0.92_0.16_90)] to-[oklch(0.85_0.18_60)] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[oklch(0.65_0.15_250)] to-[oklch(0.55_0.18_250)] bg-clip-text text-transparent">
               done right.
             </span>
           </h1>
