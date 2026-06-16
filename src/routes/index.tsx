@@ -59,7 +59,7 @@ const navLinks = [
 function Nav() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="absolute top-0 left-0 right-0 z-50">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         <a href="#" className="flex items-center gap-2 text-foreground">
           <img src={logo} alt={`${BRAND} logo`} className="h-9 w-9 rounded-lg object-contain" />
