@@ -447,24 +447,6 @@ function Gallery() {
 
 const testimonials = [
   {
-    name: "Sarah M.",
-    location: "Overland Park",
-    text: "Overlease made our windows look brand new. The crew was professional, on time, and left zero mess. Already booked our next clean.",
-    rating: 5,
-  },
-  {
-    name: "David & Lisa K.",
-    location: "Leawood",
-    text: "We had 30+ windows including some tough French panes. They handled everything perfectly — glass, frames, sills, the lot. Highly recommend.",
-    rating: 5,
-  },
-  {
-    name: "James R.",
-    location: "Olathe",
-    text: "Fair price, great communication, and the streak-free guarantee actually means something. Best window service we've used in Kansas.",
-    rating: 5,
-  },
-  {
     name: "Maggie",
     location: "Shawnee",
     text: "Henry did a great and thorough job within a timely manner! Best of both worlds :)",
@@ -480,7 +462,7 @@ function Testimonials() {
         <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">What customers say</h2>
         <p className="mt-4 text-lg text-muted-foreground">Real feedback from real Kansas homeowners.</p>
       </div>
-      <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-14 grid gap-6 grid-cols-1 max-w-md mx-auto">
         {testimonials.map((t, i) => (
           <div key={i} className="rounded-3xl border border-border bg-card p-7 shadow-[var(--shadow-card)]">
             <div className="flex gap-0.5">
