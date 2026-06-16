@@ -56,6 +56,7 @@ function Index() {
       <FAQ />
       <FinalCTA />
       <Footer />
+      <FloatingQuoteButton />
     </div>
   );
 }
