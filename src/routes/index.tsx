@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
 import windowBefore from "@/assets/window-before.jpg.asset.json";
 import windowAfter from "@/assets/window-after.jpg.asset.json";
 import windowBefore2 from "@/assets/window-before-2.jpg.asset.json";
