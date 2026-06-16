@@ -19,7 +19,7 @@ const PHONE_DISPLAY = "913 302 0530";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "VB Clear — Kansas Window Cleaning. Frames, Sills & Glass." },
+      { title: "Burns Clear — Kansas Window Cleaning. Frames, Sills & Glass." },
       { name: "description", content: "Professional residential window cleaning across the Kansas area. Streak-free glass, spotless frames and sills. Call 913 302 0530." },
       { property: "og:title", content: "VB Clear — Kansas Window Cleaning" },
       { property: "og:description", content: "Residential window cleaning across Kansas. Licensed, insured, streak-free." },
