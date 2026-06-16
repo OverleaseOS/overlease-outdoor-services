@@ -464,6 +464,12 @@ const testimonials = [
     text: "Fair price, great communication, and the streak-free guarantee actually means something. Best window service we've used in Kansas.",
     rating: 5,
   },
+  {
+    name: "Maggie",
+    location: "Shawnee",
+    text: "Henry did a great and thorough job within a timely manner! Best of both worlds :)",
+    rating: 5,
+  },
 ];
 
 function Testimonials() {
