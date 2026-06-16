@@ -106,7 +106,7 @@ function Hero() {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-[oklch(0.85_0.16_90)] text-primary" />
+                  <Star key={i} className="h-4 w-4 fill-primary text-primary" />
                 ))}
               </div>
               4.9 / 5 from 480+ reviews
