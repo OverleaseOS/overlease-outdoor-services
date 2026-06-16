@@ -152,7 +152,7 @@ function Hero() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-36 md:pt-44 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pb-32">
         <div className="text-foreground">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider ring-1 ring-white/20 backdrop-blur-md">
-            <BadgeCheck className="h-3.5 w-3.5" /> LICENSED & INSURED · SERVING KANSAS · TRUSTED BY + HOMES
+            <BadgeCheck className="h-3.5 w-3.5" /> LICENSED & INSURED · SERVING KANSAS · TRUSTED BY MANY HOMES
           </span>
 
           <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
@@ -178,7 +178,7 @@ function Hero() {
                   <Star key={i} className="h-4 w-4 fill-primary text-primary" />
                 ))}
               </div>
-              4.9 / 5 from 480+ reviews
+              5 / 5 from 2 reviews
             </div>
           </div>
         </div>
