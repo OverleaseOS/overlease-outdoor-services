@@ -381,7 +381,7 @@ const whyUs = [
   { icon: BadgeCheck, title: "Licensed & Insured", desc: "Fully licensed and insured — your home and our team are protected on every job." },
   { icon: Sparkles, title: "Streak-free guarantee", desc: "If you see a streak, we come back. Period." },
   { icon: Clock, title: "On time, every time", desc: "We respect your schedule. 15-min arrival window confirmation." },
-  { icon: Award, title: "5-star rated team", desc: "Trained residential specialists. 480+ five-star reviews and counting." },
+  { icon: Award, title: "5-star rated team", desc: "Trained residential specialists. Five-star reviews from local homeowners." },
 ];
 
 
@@ -464,6 +464,12 @@ const testimonials = [
     text: "Fair price, great communication, and the streak-free guarantee actually means something. Best window service we've used in Kansas.",
     rating: 5,
   },
+  {
+    name: "Maggie",
+    location: "Shawnee",
+    text: "Henry did a great and thorough job within a timely manner! Best of both worlds :)",
+    rating: 5,
+  },
 ];
 
 function Testimonials() {
@@ -474,7 +480,7 @@ function Testimonials() {
         <h2 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">What customers say</h2>
         <p className="mt-4 text-lg text-muted-foreground">Real feedback from real Kansas homeowners.</p>
       </div>
-      <div className="mt-14 grid gap-6 md:grid-cols-3">
+      <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {testimonials.map((t, i) => (
           <div key={i} className="rounded-3xl border border-border bg-card p-7 shadow-[var(--shadow-card)]">
             <div className="flex gap-0.5">
