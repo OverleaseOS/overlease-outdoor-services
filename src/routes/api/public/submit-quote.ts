@@ -78,21 +78,62 @@ export const Route = createFileRoute('/api/public/submit-quote')({
           const html = await render(React.createElement(template.component, templateData), { pretty: false })
           const text = await render(React.createElement(template.component, templateData), { plainText: true })
 
-          await supabaseAdmin.rpc('enqueue_email', {
-            queue_name: 'transactional_emails',
-            payload: {
-              to: template.to || 'info@overleaseoutdoorservices.com',
-              from: 'Overlease Outdoor Services <notifications@notify.overleaseoutdoorservices.com>',
-              sender_domain: 'notify.overleaseoutdoorservices.com',
-              subject,
-              html,
-              text,
-              purpose: 'transactional',
-              label: 'quote-notification',
-              idempotency_key: `quote-${inserted.id}`,
-              message_id: `quote-${inserted.id}`,
-            },
-          })
+          const recipient = (template.to || 'info@overleaseoutdoorservices.com').toLowerCase()
+
+          // Get or create an unsubscribe token for the recipient (required by sender API)
+          let unsubscribeToken: string | undefined
+          const { data: existingToken } = await supabaseAdmin
+            .from('email_unsubscribe_tokens')
+            .select('token, used_at')
+            .eq('email', recipient)
+            .maybeSingle()
+
+          if (existingToken && !existingToken.used_at) {
+            unsubscribeToken = existingToken.token
+          } else if (!existingToken) {
+            const bytes = new Uint8Array(32)
+            crypto.getRandomValues(bytes)
+            const newToken = Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('')
+            await supabaseAdmin
+              .from('email_unsubscribe_tokens')
+              .upsert({ token: newToken, email: recipient }, { onConflict: 'email', ignoreDuplicates: true })
+            const { data: storedToken } = await supabaseAdmin
+              .from('email_unsubscribe_tokens')
+              .select('token')
+              .eq('email', recipient)
+              .maybeSingle()
+            unsubscribeToken = storedToken?.token
+          }
+
+          if (!unsubscribeToken) {
+            console.error('Could not resolve unsubscribe token for quote notification')
+          } else {
+            const messageId = `quote-${inserted.id}`
+            await supabaseAdmin.from('email_send_log').insert({
+              message_id: messageId,
+              template_name: 'quote-notification',
+              recipient_email: recipient,
+              status: 'pending',
+            })
+
+            await supabaseAdmin.rpc('enqueue_email', {
+              queue_name: 'transactional_emails',
+              payload: {
+                to: recipient,
+                from: 'Overlease Outdoor Services <notifications@notify.overleaseoutdoorservices.com>',
+                sender_domain: 'notify.overleaseoutdoorservices.com',
+                subject,
+                html,
+                text,
+                purpose: 'transactional',
+                label: 'quote-notification',
+                idempotency_key: `quote-${inserted.id}`,
+                message_id: messageId,
+                unsubscribe_token: unsubscribeToken,
+                queued_at: new Date().toISOString(),
+              },
+            })
+          }
         } catch (e) {
           console.error('enqueue_email failed', e)
         }
