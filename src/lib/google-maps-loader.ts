@@ -1,3 +1,5 @@
+/// <reference types="google.maps" />
+
 // Loads the Google Maps JS API (Places library) exactly once.
 // Uses the browser key from the Lovable Google Maps connector.
 // The key is referrer-restricted server-side, so it's safe in the client.
@@ -7,7 +9,6 @@ let loadPromise: Promise<typeof google> | null = null;
 declare global {
   interface Window {
     __lovableInitGoogleMaps?: () => void;
-    google: typeof google;
   }
 }
 
