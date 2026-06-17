@@ -1,0 +1,20 @@
+name = "overlease-outdoor-services"
+main = ".output/server/index.mjs"
+compatibility_date = "2025-06-01"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".output/public"
+binding = "ASSETS"
+
+# Public (non-secret) env vars. Set secrets via:
+#   wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+#   wrangler secret put LOVABLE_API_KEY
+#   wrangler secret put MAILGUN_API_KEY
+#   ...etc
+[vars]
+VITE_SUPABASE_URL = "https://ajrdauvwfuvjrvrmqsgo.supabase.co"
+VITE_SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqcmRhdXZ3ZnV2anJ2cm1xc2dvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NDQyNzUsImV4cCI6MjA5NzIyMDI3NX0.YQP0okKKgp-9tseLbaOR6NgFNkaZGsU8HWicwv0Xpe4"
+VITE_SUPABASE_PROJECT_ID = "ajrdauvwfuvjrvrmqsgo"
+SUPABASE_URL = "https://ajrdauvwfuvjrvrmqsgo.supabase.co"
+SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqcmRhdXZ3ZnV2anJ2cm1xc2dvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NDQyNzUsImV4cCI6MjA5NzIyMDI3NX0.YQP0okKKgp-9tseLbaOR6NgFNkaZGsU8HWicwv0Xpe4"
