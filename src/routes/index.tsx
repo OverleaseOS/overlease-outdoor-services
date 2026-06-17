@@ -230,7 +230,7 @@ function AddressAutocomplete({
 }: {
   value: string;
   onChange: (val: string) => void;
-  onSelect: (parts: AddressParts) => void;
+  onSelect: (fullAddress: string) => void;
   error?: string;
 }) {
   const [query, setQuery] = useState(value);
@@ -311,14 +311,13 @@ function AddressAutocomplete({
   };
 
   const handleSelect = (f: PhotonFeature) => {
-    const parts = featureToParts(f);
     setOpen(false);
     setSuggestions([]);
     setActiveIndex(-1);
-    const label = parts.street || featureLabel(f);
+    const label = featureLabel(f);
     setQuery(label);
     onChange(label);
-    onSelect(parts);
+    onSelect(label);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -426,9 +425,6 @@ function ContactForm() {
     name: "",
     phone: "",
     address: "",
-    city: "",
-    state: "",
-    zip: "",
     service: "",
     windowCount: "",
     windowType: "",
@@ -439,17 +435,7 @@ function ContactForm() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    // Compose full address from parts for backend storage.
-    const fullAddress = [
-      form.address,
-      [form.city, form.state].filter(Boolean).join(", "),
-      form.zip,
-    ]
-      .filter(Boolean)
-      .join(", ")
-      .trim();
-    const payload = { ...form, address: fullAddress || form.address };
-    const result = quoteSchema.safeParse(payload);
+    const result = quoteSchema.safeParse(form);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
@@ -472,9 +458,6 @@ function ContactForm() {
         name: "",
         phone: "",
         address: "",
-        city: "",
-        state: "",
-        zip: "",
         service: "",
         windowCount: "",
         windowType: "",
@@ -539,58 +522,9 @@ function ContactForm() {
           <AddressAutocomplete
             value={form.address}
             onChange={(val) => setForm((f) => ({ ...f, address: val }))}
-            onSelect={(parts) =>
-              setForm((f) => ({
-                ...f,
-                address: parts.street,
-                city: parts.city,
-                state: parts.state,
-                zip: parts.zip,
-              }))
-            }
+            onSelect={(full) => setForm((f) => ({ ...f, address: full }))}
             error={errors.address}
           />
-        </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_120px_120px]">
-          <div>
-            <Label htmlFor="city">City</Label>
-            <Input
-              id="city"
-              value={form.city}
-              onChange={(e) => setForm({ ...form, city: e.target.value })}
-              placeholder="City"
-              className="mt-1.5"
-              maxLength={80}
-              autoComplete="address-level2"
-            />
-          </div>
-          <div>
-            <Label htmlFor="state">State</Label>
-            <Input
-              id="state"
-              value={form.state}
-              onChange={(e) =>
-                setForm({ ...form, state: e.target.value.toUpperCase().slice(0, 2) })
-              }
-              placeholder="KS"
-              className="mt-1.5"
-              maxLength={2}
-              autoComplete="address-level1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="zip">ZIP</Label>
-            <Input
-              id="zip"
-              value={form.zip}
-              onChange={(e) => setForm({ ...form, zip: e.target.value })}
-              placeholder="66000"
-              className="mt-1.5"
-              maxLength={10}
-              autoComplete="postal-code"
-              inputMode="numeric"
-            />
-          </div>
         </div>
         <div>
           <Label htmlFor="service">Service needed</Label>
