@@ -160,14 +160,67 @@ const quoteSchema = z.object({
   message: z.string().trim().max(500, { message: "Details must be under 500 characters" }).optional(),
 });
 
-import { loadGoogleMaps } from "@/lib/google-maps-loader";
-
 type AddressParts = { street: string; city: string; state: string; zip: string };
 
-type Suggestion = {
-  placePrediction: google.maps.places.PlacePrediction;
-  text: string;
+type PhotonFeature = {
+  properties: {
+    country?: string;
+    countrycode?: string;
+    housenumber?: string;
+    street?: string;
+    name?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    locality?: string;
+    state?: string;
+    statecode?: string;
+    postcode?: string;
+  };
 };
+
+const US_STATE_CODES: Record<string, string> = {
+  alabama: "AL", alaska: "AK", arizona: "AZ", arkansas: "AR", california: "CA",
+  colorado: "CO", connecticut: "CT", delaware: "DE", "district of columbia": "DC",
+  florida: "FL", georgia: "GA", hawaii: "HI", idaho: "ID", illinois: "IL",
+  indiana: "IN", iowa: "IA", kansas: "KS", kentucky: "KY", louisiana: "LA",
+  maine: "ME", maryland: "MD", massachusetts: "MA", michigan: "MI", minnesota: "MN",
+  mississippi: "MS", missouri: "MO", montana: "MT", nebraska: "NE", nevada: "NV",
+  "new hampshire": "NH", "new jersey": "NJ", "new mexico": "NM", "new york": "NY",
+  "north carolina": "NC", "north dakota": "ND", ohio: "OH", oklahoma: "OK",
+  oregon: "OR", pennsylvania: "PA", "rhode island": "RI", "south carolina": "SC",
+  "south dakota": "SD", tennessee: "TN", texas: "TX", utah: "UT", vermont: "VT",
+  virginia: "VA", washington: "WA", "west virginia": "WV", wisconsin: "WI", wyoming: "WY",
+};
+
+function toStateCode(s?: string): string {
+  if (!s) return "";
+  if (s.length === 2) return s.toUpperCase();
+  return US_STATE_CODES[s.toLowerCase()] ?? "";
+}
+
+function featureToParts(f: PhotonFeature): AddressParts {
+  const p = f.properties;
+  const street = [p.housenumber, p.street ?? p.name].filter(Boolean).join(" ").trim();
+  return {
+    street,
+    city: p.city ?? p.town ?? p.village ?? p.locality ?? "",
+    state: toStateCode(p.statecode ?? p.state),
+    zip: p.postcode ?? "",
+  };
+}
+
+function featureLabel(f: PhotonFeature): string {
+  const p = f.properties;
+  const line1 = [p.housenumber, p.street ?? p.name].filter(Boolean).join(" ").trim();
+  const cityStateZip = [
+    p.city ?? p.town ?? p.village ?? p.locality,
+    [toStateCode(p.statecode ?? p.state), p.postcode].filter(Boolean).join(" "),
+  ]
+    .filter(Boolean)
+    .join(", ");
+  return [line1, cityStateZip].filter(Boolean).join(", ");
+}
 
 function AddressAutocomplete({
   value,
@@ -181,15 +234,14 @@ function AddressAutocomplete({
   error?: string;
 }) {
   const [query, setQuery] = useState(value);
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [suggestions, setSuggestions] = useState<PhotonFeature[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const sessionTokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
   const reqIdRef = useRef(0);
-  const justSelectedRef = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     setQuery(value);
@@ -213,46 +265,39 @@ function AddressAutocomplete({
       return;
     }
     const reqId = ++reqIdRef.current;
+    if (abortRef.current) abortRef.current.abort();
+    const ctrl = new AbortController();
+    abortRef.current = ctrl;
+    const timeout = setTimeout(() => ctrl.abort(), 5000);
     setLoading(true);
     try {
-      const g = await loadGoogleMaps();
-      const { AutocompleteSuggestion, AutocompleteSessionToken } =
-        (await g.maps.importLibrary("places")) as google.maps.PlacesLibrary;
-
-      if (!sessionTokenRef.current) {
-        sessionTokenRef.current = new AutocompleteSessionToken();
-      }
-
-      const { suggestions: results } =
-        await AutocompleteSuggestion.fetchAutocompleteSuggestions({
-          input: q,
-          sessionToken: sessionTokenRef.current,
-          includedRegionCodes: ["us"],
-          includedPrimaryTypes: ["street_address", "premise", "subpremise", "route"],
-        });
-
+      const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(
+        q,
+      )}&limit=10&bbox=-125,24,-66,49`;
+      const res = await fetch(url, { signal: ctrl.signal });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = (await res.json()) as { features?: PhotonFeature[] };
       if (reqId !== reqIdRef.current) return;
-
-      const mapped: Suggestion[] = results
-        .filter((r): r is google.maps.places.AutocompleteSuggestion & {
-          placePrediction: google.maps.places.PlacePrediction;
-        } => r.placePrediction != null)
-        .slice(0, 5)
-        .map((r) => ({
-          placePrediction: r.placePrediction,
-          text: r.placePrediction.text?.toString() ?? "",
-        }));
-
-      setSuggestions(mapped);
+      const filtered = (data.features ?? [])
+        .filter(
+          (f) =>
+            f.properties?.country === "United States" ||
+            f.properties?.countrycode === "US",
+        )
+        .slice(0, 5);
+      setSuggestions(filtered);
       setActiveIndex(-1);
-      setOpen(mapped.length > 0);
+      setOpen(filtered.length > 0);
     } catch (err) {
-      console.error("Google Places autocomplete failed", err);
+      if ((err as Error).name !== "AbortError") {
+        console.error("Photon autocomplete failed", err);
+      }
       if (reqId === reqIdRef.current) {
         setSuggestions([]);
         setOpen(false);
       }
     } finally {
+      clearTimeout(timeout);
       if (reqId === reqIdRef.current) setLoading(false);
     }
   }, []);
@@ -265,51 +310,15 @@ function AddressAutocomplete({
     debounceRef.current = setTimeout(() => fetchSuggestions(val), 300);
   };
 
-  const handleSelect = async (s: Suggestion) => {
-    justSelectedRef.current = true;
+  const handleSelect = (f: PhotonFeature) => {
+    const parts = featureToParts(f);
     setOpen(false);
     setSuggestions([]);
     setActiveIndex(-1);
-    try {
-      const place = s.placePrediction.toPlace();
-      await place.fetchFields({ fields: ["addressComponents", "formattedAddress"] });
-      const comps = place.addressComponents ?? [];
-      const get = (type: string) =>
-        comps.find((c) => c.types.includes(type))?.shortText ??
-        comps.find((c) => c.types.includes(type))?.longText ??
-        "";
-      const streetNumber = get("street_number");
-      const route =
-        comps.find((c) => c.types.includes("route"))?.longText ?? "";
-      const subpremise = get("subpremise");
-      const streetLine = [
-        [streetNumber, route].filter(Boolean).join(" "),
-        subpremise ? `#${subpremise}` : "",
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .trim();
-      const parts: AddressParts = {
-        street: streetLine || place.formattedAddress?.split(",")[0]?.trim() || s.text,
-        city:
-          comps.find((c) => c.types.includes("locality"))?.longText ??
-          comps.find((c) => c.types.includes("sublocality"))?.longText ??
-          comps.find((c) => c.types.includes("postal_town"))?.longText ??
-          "",
-        state: get("administrative_area_level_1"),
-        zip: get("postal_code"),
-      };
-      setQuery(parts.street);
-      onChange(parts.street);
-      onSelect(parts);
-      // Session token consumed after a selection — start a new session next time.
-      sessionTokenRef.current = null;
-    } catch (err) {
-      console.error("Place details fetch failed", err);
-      // Fallback: at least put the prediction text into the street field.
-      setQuery(s.text);
-      onChange(s.text);
-    }
+    const label = parts.street || featureLabel(f);
+    setQuery(label);
+    onChange(label);
+    onSelect(parts);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -323,7 +332,7 @@ function AddressAutocomplete({
     } else if (e.key === "Enter") {
       if (activeIndex >= 0 && activeIndex < suggestions.length) {
         e.preventDefault();
-        void handleSelect(suggestions[activeIndex]);
+        handleSelect(suggestions[activeIndex]);
       }
     } else if (e.key === "Escape") {
       setOpen(false);
@@ -346,7 +355,7 @@ function AddressAutocomplete({
         className={`mt-1.5 ${error ? "border-destructive focus-visible:ring-destructive" : ""}`}
         autoComplete="off"
         aria-invalid={!!error}
-        aria-describedby={error ? "address-error" : undefined}
+        aria-describedby={error ? "address-error" : "address-attribution"}
         role="combobox"
         aria-autocomplete="list"
         aria-expanded={open}
@@ -369,7 +378,7 @@ function AddressAutocomplete({
           {loading && suggestions.length === 0 && (
             <li className="px-4 py-2 text-sm text-muted-foreground">Searching...</li>
           )}
-          {suggestions.map((s, i) => (
+          {suggestions.map((f, i) => (
             <li
               key={i}
               id={`${listboxId}-opt-${i}`}
@@ -379,13 +388,13 @@ function AddressAutocomplete({
               <button
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => void handleSelect(s)}
+                onClick={() => handleSelect(f)}
                 onMouseEnter={() => setActiveIndex(i)}
                 className={`w-full px-4 py-2 text-left text-sm transition ${
                   i === activeIndex ? "bg-muted" : "hover:bg-muted"
                 }`}
               >
-                {s.text}
+                {featureLabel(f)}
               </button>
             </li>
           ))}
@@ -396,6 +405,17 @@ function AddressAutocomplete({
           {error}
         </p>
       )}
+      <p id="address-attribution" className="mt-1 text-[10px] text-muted-foreground">
+        Address data ©{" "}
+        <a
+          href="https://www.openstreetmap.org/copyright"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          OpenStreetMap contributors
+        </a>
+      </p>
     </div>
   );
 }
