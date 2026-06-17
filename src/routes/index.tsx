@@ -551,47 +551,6 @@ function ContactForm() {
             error={errors.address}
           />
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_120px_120px]">
-          <div>
-            <Label htmlFor="city">City</Label>
-            <Input
-              id="city"
-              value={form.city}
-              onChange={(e) => setForm({ ...form, city: e.target.value })}
-              placeholder="City"
-              className="mt-1.5"
-              maxLength={80}
-              autoComplete="address-level2"
-            />
-          </div>
-          <div>
-            <Label htmlFor="state">State</Label>
-            <Input
-              id="state"
-              value={form.state}
-              onChange={(e) =>
-                setForm({ ...form, state: e.target.value.toUpperCase().slice(0, 2) })
-              }
-              placeholder="KS"
-              className="mt-1.5"
-              maxLength={2}
-              autoComplete="address-level1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="zip">ZIP</Label>
-            <Input
-              id="zip"
-              value={form.zip}
-              onChange={(e) => setForm({ ...form, zip: e.target.value })}
-              placeholder="66000"
-              className="mt-1.5"
-              maxLength={10}
-              autoComplete="postal-code"
-              inputMode="numeric"
-            />
-          </div>
-        </div>
         <div>
           <Label htmlFor="service">Service needed</Label>
           <Select
