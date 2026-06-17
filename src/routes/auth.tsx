@@ -9,7 +9,17 @@ export const Route = createFileRoute('/auth')({
     const { data } = await supabase.auth.getUser()
     if (data.user) throw redirect({ to: '/admin' })
   },
-  head: () => ({ meta: [{ title: 'Sign in | Overlease Outdoor Services' }] }),
+  head: () => ({
+    meta: [
+      { title: "Sign in — Overlease Outdoor Services" },
+      { name: "description", content: "Sign in to the Overlease Outdoor Services admin area to manage incoming quote requests." },
+      { name: "robots", content: "noindex, nofollow" },
+      { property: "og:title", content: "Sign in — Overlease Outdoor Services" },
+      { property: "og:description", content: "Admin sign in for Overlease Outdoor Services." },
+      { property: "og:url", content: "https://overleaseoutdoorservices.com/auth" },
+    ],
+    links: [{ rel: "canonical", href: "https://overleaseoutdoorservices.com/auth" }],
+  }),
   component: AuthPage,
 })
 

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /unsubscribe
+Disallow: /lovable/
+Disallow: /api/
+
+Sitemap: https://overleaseoutdoorservices.com/sitemap.xml

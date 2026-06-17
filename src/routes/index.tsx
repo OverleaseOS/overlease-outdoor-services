@@ -28,16 +28,53 @@ const PHONE_DISPLAY = "913 424 7527";
 const EMAIL = "info@overleaseoutdoorservices.com";
 const BRAND = "Overlease Outdoor Services";
 
+const FAQS = [
+  { q: "Do you clean window frames and sills too?", a: "Yes — that's our specialty. Glass, frames, sills, tracks, and screens are all included in every standard clean." },
+  { q: "How much does it cost?", a: "Pricing depends on the number of windows and access. Most homes are a small flat fee per window. Use the quote request form for a free, no-obligation quote." },
+  { q: "Are you insured?", a: "Absolutely. We carry full public liability insurance, so you're protected on every job." },
+  { q: "How long does it take?", a: "An average home (10–15 windows) takes around 1.5 to 2.5 hours, depending on condition and access." },
+  { q: "What if it rains after?", a: "Rain on clean glass doesn't leave streaks — only dirt does. But if you're unhappy, we'll come back free of charge." },
+  { q: "Do you do high-rise or commercial buildings?", a: "Yes. We service everything from single-story homes to multi-story commercial buildings with certified rope-access technicians." },
+];
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Overlease Outdoor Services" },
-      { name: "description", content: "Professional residential window cleaning across the Kansas area. Streak-free glass, spotless frames and sills. Call 913 424 7527." },
-      { property: "og:title", content: "Overlease Outdoor Services" },
-      { property: "og:description", content: "Residential window cleaning across Kansas. Licensed, insured, streak-free." },
+      { title: "Overlease Outdoor Services — Window Cleaning in Kansas" },
+      { name: "description", content: "Professional residential window cleaning across Kansas. Streak-free glass, spotless frames and sills. Licensed, insured. Call 913 424 7527." },
+      { property: "og:title", content: "Overlease Outdoor Services — Window Cleaning in Kansas" },
+      { property: "og:description", content: "Residential window cleaning across Kansas. Licensed, insured, streak-free results." },
+      { property: "og:url", content: "https://overleaseoutdoorservices.com/" },
       { property: "og:image", content: ogAsset.url },
-      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: ogAsset.url },
+    ],
+    links: [{ rel: "canonical", href: "https://overleaseoutdoorservices.com/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "Overlease Outdoor Services",
+          url: "https://overleaseoutdoorservices.com",
+          telephone: "+1-913-424-7527",
+          email: "info@overleaseoutdoorservices.com",
+          areaServed: "Kansas",
+          priceRange: "$$",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
     ],
   }),
   component: Index,
@@ -581,14 +618,7 @@ function Testimonials() {
   );
 }
 
-const faqs = [
-  { q: "Do you clean window frames and sills too?", a: "Yes — that's our specialty. Glass, frames, sills, tracks, and screens are all included in every standard clean." },
-  { q: "How much does it cost?", a: "Pricing depends on the number of windows and access. Most homes are a small flat fee per window. Use the quote request form above for a free, no-obligation quote." },
-  { q: "Are you insured?", a: "Absolutely. We carry full public liability insurance, so you're protected on every job." },
-  { q: "How long does it take?", a: "An average home (10–15 windows) takes around 1.5 to 2.5 hours, depending on condition and access." },
-  { q: "What if it rains after?", a: "Rain on clean glass doesn't leave streaks — only dirt does. But if you're unhappy, we'll come back free of charge." },
-  { q: "Do you do high-rise or commercial buildings?", a: "Yes. We service everything from single-story homes to multi-story commercial buildings with certified rope-access technicians." },
-];
+const faqs = FAQS;
 
 function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
