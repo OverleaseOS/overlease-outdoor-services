@@ -160,53 +160,36 @@ const quoteSchema = z.object({
   message: z.string().trim().max(500, { message: "Details must be under 500 characters" }).optional(),
 });
 
-const ADDRESS_ABBREVIATIONS: Record<string, string> = {
-  st: "street", str: "street", street: "street",
-  ave: "avenue", av: "avenue", avenue: "avenue",
-  rd: "road", road: "road",
-  blvd: "boulevard", blv: "boulevard", boulevard: "boulevard",
-  dr: "drive", drv: "drive", drive: "drive",
-  ln: "lane", lane: "lane",
-  ct: "court", crt: "court", court: "court",
-  pl: "place", place: "place",
-  hwy: "highway", hiwy: "highway", highway: "highway",
-  pkwy: "parkway", parkway: "parkway",
-  cir: "circle", circle: "circle",
-  ter: "terrace", terr: "terrace", terrace: "terrace",
-  trl: "trail", trail: "trail",
-  way: "way",
-  n: "north", north: "north",
-  s: "south", south: "south",
-  e: "east", east: "east",
-  w: "west", west: "west",
-  ne: "northeast", northeast: "northeast",
-  nw: "northwest", northwest: "northwest",
-  se: "southeast", southeast: "southeast",
-  sw: "southwest", southwest: "southwest",
-  apt: "apartment", apartment: "apartment",
-  ste: "suite", suite: "suite",
-  fl: "floor", floor: "floor",
-  rm: "room", room: "room",
+import { loadGoogleMaps } from "@/lib/google-maps-loader";
+
+type AddressParts = { street: string; city: string; state: string; zip: string };
+
+type Suggestion = {
+  placePrediction: google.maps.places.PlacePrediction;
+  text: string;
 };
 
-function normalizeAddress(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[.,#]/g, " ")
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((tok) => ADDRESS_ABBREVIATIONS[tok] ?? tok)
-    .join(" ")
-    .trim();
-}
-
-function AddressAutocomplete({ value, onChange, error }: { value: string; onChange: (val: string) => void; error?: string }) {
+function AddressAutocomplete({
+  value,
+  onChange,
+  onSelect,
+  error,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  onSelect: (parts: AddressParts) => void;
+  error?: string;
+}) {
   const [query, setQuery] = useState(value);
-  const [suggestions, setSuggestions] = useState<Array<{ display_name: string }>>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sessionTokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
+  const reqIdRef = useRef(0);
+  const justSelectedRef = useRef(false);
 
   useEffect(() => {
     setQuery(value);
@@ -223,56 +206,54 @@ function AddressAutocomplete({ value, onChange, error }: { value: string; onChan
   }, []);
 
   const fetchSuggestions = useCallback(async (q: string) => {
-    if (q.length < 3) {
+    if (q.trim().length < 3) {
       setSuggestions([]);
       setOpen(false);
+      setLoading(false);
       return;
     }
+    const reqId = ++reqIdRef.current;
     setLoading(true);
     try {
-      // Predict: if the user hasn't typed a street-type suffix yet,
-      // also query Nominatim with common suffixes appended so partial
-      // inputs like "4204 W 93rd" still return results.
-      const tokens = normalizeAddress(q).split(" ").filter(Boolean);
-      const lastToken = tokens[tokens.length - 1] ?? "";
-      const STREET_TYPES = new Set([
-        "street","avenue","road","boulevard","drive","lane","court","place",
-        "highway","parkway","circle","terrace","trail","way",
-      ]);
-      const variants = [q];
-      if (!STREET_TYPES.has(lastToken)) {
-        for (const suffix of ["street","avenue","road","drive","boulevard","lane","court"]) {
-          variants.push(`${q} ${suffix}`);
-        }
+      const g = await loadGoogleMaps();
+      const { AutocompleteSuggestion, AutocompleteSessionToken } =
+        (await g.maps.importLibrary("places")) as google.maps.PlacesLibrary;
+
+      if (!sessionTokenRef.current) {
+        sessionTokenRef.current = new AutocompleteSessionToken();
       }
-      const results = await Promise.all(
-        variants.map((v) =>
-          fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(v)}&format=json&addressdetails=1&limit=10&countrycodes=us`)
-            .then((r) => (r.ok ? r.json() : []))
-            .catch(() => [])
-        )
-      );
-      const seen = new Set<string>();
-      const merged: Array<{ display_name: string }> = [];
-      for (const arr of results) {
-        for (const item of (arr as Array<{ display_name: string }>) || []) {
-          if (item?.display_name && !seen.has(item.display_name)) {
-            seen.add(item.display_name);
-            merged.push(item);
-          }
-        }
+
+      const { suggestions: results } =
+        await AutocompleteSuggestion.fetchAutocompleteSuggestions({
+          input: q,
+          sessionToken: sessionTokenRef.current,
+          includedRegionCodes: ["us"],
+          includedPrimaryTypes: ["street_address", "premise", "subpremise", "route"],
+        });
+
+      if (reqId !== reqIdRef.current) return;
+
+      const mapped: Suggestion[] = results
+        .filter((r): r is google.maps.places.AutocompleteSuggestion & {
+          placePrediction: google.maps.places.PlacePrediction;
+        } => r.placePrediction != null)
+        .slice(0, 5)
+        .map((r) => ({
+          placePrediction: r.placePrediction,
+          text: r.placePrediction.text?.toString() ?? "",
+        }));
+
+      setSuggestions(mapped);
+      setActiveIndex(-1);
+      setOpen(mapped.length > 0);
+    } catch (err) {
+      console.error("Google Places autocomplete failed", err);
+      if (reqId === reqIdRef.current) {
+        setSuggestions([]);
+        setOpen(false);
       }
-      const normalizedQuery = normalizeAddress(q);
-      const filtered = merged
-        .filter((s) => normalizeAddress(s.display_name).startsWith(normalizedQuery))
-        .slice(0, 5);
-      setSuggestions(filtered);
-      setOpen(filtered.length > 0);
-    } catch {
-      setSuggestions([]);
-      setOpen(false);
     } finally {
-      setLoading(false);
+      if (reqId === reqIdRef.current) setLoading(false);
     }
   }, []);
 
@@ -281,15 +262,75 @@ function AddressAutocomplete({ value, onChange, error }: { value: string; onChan
     setQuery(val);
     onChange(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => fetchSuggestions(val), 400);
+    debounceRef.current = setTimeout(() => fetchSuggestions(val), 300);
   };
 
-  const handleSelect = (name: string) => {
-    setQuery(name);
-    onChange(name);
+  const handleSelect = async (s: Suggestion) => {
+    justSelectedRef.current = true;
     setOpen(false);
     setSuggestions([]);
+    setActiveIndex(-1);
+    try {
+      const place = s.placePrediction.toPlace();
+      await place.fetchFields({ fields: ["addressComponents", "formattedAddress"] });
+      const comps = place.addressComponents ?? [];
+      const get = (type: string) =>
+        comps.find((c) => c.types.includes(type))?.shortText ??
+        comps.find((c) => c.types.includes(type))?.longText ??
+        "";
+      const streetNumber = get("street_number");
+      const route =
+        comps.find((c) => c.types.includes("route"))?.longText ?? "";
+      const subpremise = get("subpremise");
+      const streetLine = [
+        [streetNumber, route].filter(Boolean).join(" "),
+        subpremise ? `#${subpremise}` : "",
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+      const parts: AddressParts = {
+        street: streetLine || place.formattedAddress?.split(",")[0]?.trim() || s.text,
+        city:
+          comps.find((c) => c.types.includes("locality"))?.longText ??
+          comps.find((c) => c.types.includes("sublocality"))?.longText ??
+          comps.find((c) => c.types.includes("postal_town"))?.longText ??
+          "",
+        state: get("administrative_area_level_1"),
+        zip: get("postal_code"),
+      };
+      setQuery(parts.street);
+      onChange(parts.street);
+      onSelect(parts);
+      // Session token consumed after a selection — start a new session next time.
+      sessionTokenRef.current = null;
+    } catch (err) {
+      console.error("Place details fetch failed", err);
+      // Fallback: at least put the prediction text into the street field.
+      setQuery(s.text);
+      onChange(s.text);
+    }
   };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!open || suggestions.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((i) => (i + 1) % suggestions.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((i) => (i <= 0 ? suggestions.length - 1 : i - 1));
+    } else if (e.key === "Enter") {
+      if (activeIndex >= 0 && activeIndex < suggestions.length) {
+        e.preventDefault();
+        void handleSelect(suggestions[activeIndex]);
+      }
+    } else if (e.key === "Escape") {
+      setOpen(false);
+    }
+  };
+
+  const listboxId = "address-suggestions";
 
   return (
     <div ref={wrapperRef} className="relative">
@@ -297,42 +338,98 @@ function AddressAutocomplete({ value, onChange, error }: { value: string; onChan
         id="address"
         value={query}
         onChange={handleInputChange}
-        placeholder="Start typing your address..."
+        onKeyDown={onKeyDown}
+        onFocus={() => {
+          if (suggestions.length > 0) setOpen(true);
+        }}
+        placeholder="Start typing your street address..."
         className={`mt-1.5 ${error ? "border-destructive focus-visible:ring-destructive" : ""}`}
         autoComplete="off"
         aria-invalid={!!error}
         aria-describedby={error ? "address-error" : undefined}
+        role="combobox"
+        aria-autocomplete="list"
+        aria-expanded={open}
+        aria-controls={listboxId}
+        aria-activedescendant={
+          activeIndex >= 0 ? `${listboxId}-opt-${activeIndex}` : undefined
+        }
       />
-      {loading && <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">Loading...</div>}
-      {open && suggestions.length > 0 && (
-        <div className="absolute z-10 mt-1 w-full rounded-xl border border-border bg-card shadow-[var(--shadow-card)] max-h-60 overflow-auto">
-          {suggestions.map((s, i) => (
-            <button
-              key={i}
-              type="button"
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={() => handleSelect(s.display_name)}
-              className="w-full px-4 py-2 text-left text-sm hover:bg-muted transition"
-            >
-              {s.display_name}
-            </button>
-          ))}
+      {loading && (
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+          Loading...
         </div>
       )}
-      {error && <p id="address-error" className="mt-1 text-xs text-destructive">{error}</p>}
+      {open && (suggestions.length > 0 || loading) && (
+        <ul
+          id={listboxId}
+          role="listbox"
+          className="absolute z-10 mt-1 w-full rounded-xl border border-border bg-card shadow-[var(--shadow-card)] max-h-60 overflow-auto"
+        >
+          {loading && suggestions.length === 0 && (
+            <li className="px-4 py-2 text-sm text-muted-foreground">Searching...</li>
+          )}
+          {suggestions.map((s, i) => (
+            <li
+              key={i}
+              id={`${listboxId}-opt-${i}`}
+              role="option"
+              aria-selected={i === activeIndex}
+            >
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => void handleSelect(s)}
+                onMouseEnter={() => setActiveIndex(i)}
+                className={`w-full px-4 py-2 text-left text-sm transition ${
+                  i === activeIndex ? "bg-muted" : "hover:bg-muted"
+                }`}
+              >
+                {s.text}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {error && (
+        <p id="address-error" className="mt-1 text-xs text-destructive">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
 
 function ContactForm() {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", address: "", service: "", windowCount: "", windowType: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+    service: "",
+    windowCount: "",
+    windowType: "",
+    message: "",
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    const result = quoteSchema.safeParse(form);
+    // Compose full address from parts for backend storage.
+    const fullAddress = [
+      form.address,
+      [form.city, form.state].filter(Boolean).join(", "),
+      form.zip,
+    ]
+      .filter(Boolean)
+      .join(", ")
+      .trim();
+    const payload = { ...form, address: fullAddress || form.address };
+    const result = quoteSchema.safeParse(payload);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
@@ -351,7 +448,18 @@ function ContactForm() {
       });
       if (!res.ok) throw new Error("Request failed");
       toast.success("Thanks! We'll get back to you as soon as possible.");
-      setForm({ name: "", phone: "", address: "", service: "", windowCount: "", windowType: "", message: "" });
+      setForm({
+        name: "",
+        phone: "",
+        address: "",
+        city: "",
+        state: "",
+        zip: "",
+        service: "",
+        windowCount: "",
+        windowType: "",
+        message: "",
+      });
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Please call us directly.");
@@ -406,13 +514,63 @@ function ContactForm() {
         </div>
         <div>
           <Label htmlFor="address" className="flex items-center gap-1">
-            Address <span className="text-destructive" aria-hidden="true">*</span>
+            Street Address <span className="text-destructive" aria-hidden="true">*</span>
           </Label>
           <AddressAutocomplete
             value={form.address}
-            onChange={(val) => setForm({ ...form, address: val })}
+            onChange={(val) => setForm((f) => ({ ...f, address: val }))}
+            onSelect={(parts) =>
+              setForm((f) => ({
+                ...f,
+                address: parts.street,
+                city: parts.city,
+                state: parts.state,
+                zip: parts.zip,
+              }))
+            }
             error={errors.address}
           />
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_120px_120px]">
+          <div>
+            <Label htmlFor="city">City</Label>
+            <Input
+              id="city"
+              value={form.city}
+              onChange={(e) => setForm({ ...form, city: e.target.value })}
+              placeholder="City"
+              className="mt-1.5"
+              maxLength={80}
+              autoComplete="address-level2"
+            />
+          </div>
+          <div>
+            <Label htmlFor="state">State</Label>
+            <Input
+              id="state"
+              value={form.state}
+              onChange={(e) =>
+                setForm({ ...form, state: e.target.value.toUpperCase().slice(0, 2) })
+              }
+              placeholder="KS"
+              className="mt-1.5"
+              maxLength={2}
+              autoComplete="address-level1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="zip">ZIP</Label>
+            <Input
+              id="zip"
+              value={form.zip}
+              onChange={(e) => setForm({ ...form, zip: e.target.value })}
+              placeholder="66000"
+              className="mt-1.5"
+              maxLength={10}
+              autoComplete="postal-code"
+              inputMode="numeric"
+            />
+          </div>
         </div>
         <div>
           <Label htmlFor="service">Service needed</Label>
