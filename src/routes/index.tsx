@@ -383,7 +383,7 @@ function ContactForm() {
             value={form.service}
             onValueChange={(value) => setForm({ ...form, service: value })}
           >
-            <SelectTrigger id="service" className="mt-1.5 w-full">
+            <SelectTrigger id="service" aria-label="Service needed" className="mt-1.5 w-full">
               <SelectValue placeholder="Select a service" />
             </SelectTrigger>
             <SelectContent>
@@ -416,7 +416,7 @@ function ContactForm() {
               value={form.windowType}
               onValueChange={(value) => setForm({ ...form, windowType: value })}
             >
-              <SelectTrigger id="windowType" className="mt-1.5 w-full">
+              <SelectTrigger id="windowType" aria-label="Window type" className="mt-1.5 w-full">
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent>
