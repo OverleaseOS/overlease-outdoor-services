@@ -311,14 +311,13 @@ function AddressAutocomplete({
   };
 
   const handleSelect = (f: PhotonFeature) => {
-    const parts = featureToParts(f);
     setOpen(false);
     setSuggestions([]);
     setActiveIndex(-1);
-    const label = parts.street || featureLabel(f);
+    const label = featureLabel(f);
     setQuery(label);
     onChange(label);
-    onSelect(parts);
+    onSelect(label);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
