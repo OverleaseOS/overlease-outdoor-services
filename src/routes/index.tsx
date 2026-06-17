@@ -523,15 +523,7 @@ function ContactForm() {
           <AddressAutocomplete
             value={form.address}
             onChange={(val) => setForm((f) => ({ ...f, address: val }))}
-            onSelect={(parts) =>
-              setForm((f) => ({
-                ...f,
-                address: parts.street,
-                city: parts.city,
-                state: parts.state,
-                zip: parts.zip,
-              }))
-            }
+            onSelect={(full) => setForm((f) => ({ ...f, address: full }))}
             error={errors.address}
           />
         </div>
