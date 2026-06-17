@@ -3,6 +3,17 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/unsubscribe')({
+  head: () => ({
+    meta: [
+      { title: 'Unsubscribe — Overlease Outdoor Services' },
+      { name: 'description', content: 'Unsubscribe from emails sent by Overlease Outdoor Services.' },
+      { name: 'robots', content: 'noindex, nofollow' },
+      { property: 'og:title', content: 'Unsubscribe — Overlease Outdoor Services' },
+      { property: 'og:description', content: 'Manage your email preferences with Overlease Outdoor Services.' },
+      { property: 'og:url', content: 'https://overleaseoutdoorservices.com/unsubscribe' },
+    ],
+    links: [{ rel: 'canonical', href: 'https://overleaseoutdoorservices.com/unsubscribe' }],
+  }),
   component: UnsubscribePage,
 })
 
