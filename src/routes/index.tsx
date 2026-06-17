@@ -230,7 +230,7 @@ function AddressAutocomplete({
 }: {
   value: string;
   onChange: (val: string) => void;
-  onSelect: (parts: AddressParts) => void;
+  onSelect: (fullAddress: string) => void;
   error?: string;
 }) {
   const [query, setQuery] = useState(value);
