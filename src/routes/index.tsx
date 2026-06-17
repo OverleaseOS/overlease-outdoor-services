@@ -426,9 +426,6 @@ function ContactForm() {
     name: "",
     phone: "",
     address: "",
-    city: "",
-    state: "",
-    zip: "",
     service: "",
     windowCount: "",
     windowType: "",
@@ -439,17 +436,7 @@ function ContactForm() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    // Compose full address from parts for backend storage.
-    const fullAddress = [
-      form.address,
-      [form.city, form.state].filter(Boolean).join(", "),
-      form.zip,
-    ]
-      .filter(Boolean)
-      .join(", ")
-      .trim();
-    const payload = { ...form, address: fullAddress || form.address };
-    const result = quoteSchema.safeParse(payload);
+    const result = quoteSchema.safeParse(form);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
@@ -472,9 +459,6 @@ function ContactForm() {
         name: "",
         phone: "",
         address: "",
-        city: "",
-        state: "",
-        zip: "",
         service: "",
         windowCount: "",
         windowType: "",
