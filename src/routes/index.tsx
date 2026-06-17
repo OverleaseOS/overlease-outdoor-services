@@ -402,13 +402,34 @@ function AddressAutocomplete({
 
 function ContactForm() {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", address: "", service: "", windowCount: "", windowType: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+    service: "",
+    windowCount: "",
+    windowType: "",
+    message: "",
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    const result = quoteSchema.safeParse(form);
+    // Compose full address from parts for backend storage.
+    const fullAddress = [
+      form.address,
+      [form.city, form.state].filter(Boolean).join(", "),
+      form.zip,
+    ]
+      .filter(Boolean)
+      .join(", ")
+      .trim();
+    const payload = { ...form, address: fullAddress || form.address };
+    const result = quoteSchema.safeParse(payload);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
@@ -427,7 +448,18 @@ function ContactForm() {
       });
       if (!res.ok) throw new Error("Request failed");
       toast.success("Thanks! We'll get back to you as soon as possible.");
-      setForm({ name: "", phone: "", address: "", service: "", windowCount: "", windowType: "", message: "" });
+      setForm({
+        name: "",
+        phone: "",
+        address: "",
+        city: "",
+        state: "",
+        zip: "",
+        service: "",
+        windowCount: "",
+        windowType: "",
+        message: "",
+      });
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Please call us directly.");
@@ -482,13 +514,63 @@ function ContactForm() {
         </div>
         <div>
           <Label htmlFor="address" className="flex items-center gap-1">
-            Address <span className="text-destructive" aria-hidden="true">*</span>
+            Street Address <span className="text-destructive" aria-hidden="true">*</span>
           </Label>
           <AddressAutocomplete
             value={form.address}
-            onChange={(val) => setForm({ ...form, address: val })}
+            onChange={(val) => setForm((f) => ({ ...f, address: val }))}
+            onSelect={(parts) =>
+              setForm((f) => ({
+                ...f,
+                address: parts.street,
+                city: parts.city,
+                state: parts.state,
+                zip: parts.zip,
+              }))
+            }
             error={errors.address}
           />
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_120px_120px]">
+          <div>
+            <Label htmlFor="city">City</Label>
+            <Input
+              id="city"
+              value={form.city}
+              onChange={(e) => setForm({ ...form, city: e.target.value })}
+              placeholder="City"
+              className="mt-1.5"
+              maxLength={80}
+              autoComplete="address-level2"
+            />
+          </div>
+          <div>
+            <Label htmlFor="state">State</Label>
+            <Input
+              id="state"
+              value={form.state}
+              onChange={(e) =>
+                setForm({ ...form, state: e.target.value.toUpperCase().slice(0, 2) })
+              }
+              placeholder="KS"
+              className="mt-1.5"
+              maxLength={2}
+              autoComplete="address-level1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="zip">ZIP</Label>
+            <Input
+              id="zip"
+              value={form.zip}
+              onChange={(e) => setForm({ ...form, zip: e.target.value })}
+              placeholder="66000"
+              className="mt-1.5"
+              maxLength={10}
+              autoComplete="postal-code"
+              inputMode="numeric"
+            />
+          </div>
         </div>
         <div>
           <Label htmlFor="service">Service needed</Label>
