@@ -113,7 +113,7 @@ function Hero() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-36 md:pt-44 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pb-32">
         <div className="text-foreground">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider ring-1 ring-white/20 backdrop-blur-md">
-            <BadgeCheck className="h-3.5 w-3.5" /> LICENSED & INSURED · SERVING KANSAS · TRUSTED BY MANY HOMES
+            <BadgeCheck className="h-3.5 w-3.5" /> LICENSED · SERVING KANSAS · TRUSTED BY MANY HOMES
           </span>
 
           <h1 className="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
@@ -626,7 +626,7 @@ function Services() {
 }
 
 const whyUs = [
-  { icon: BadgeCheck, title: "Licensed & Insured", desc: "Fully licensed and insured — your home and our team are protected on every job." },
+  { icon: BadgeCheck, title: "Licensed", desc: "Fully licensed — your home and our team are protected on every job." },
   { icon: Sparkles, title: "Streak-free guarantee", desc: "If you see a streak, we come back. Period." },
   { icon: Clock, title: "On time, every time", desc: "We respect your schedule. 15-min arrival window confirmation." },
   { icon: Award, title: "5-star rated team", desc: "Trained residential specialists. Five-star reviews from local homeowners." },
